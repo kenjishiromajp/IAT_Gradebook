@@ -1,0 +1,16 @@
+import { denormalize, normalize, schema } from 'normalizr';
+
+const {{ camelCase name }}Schema = new schema.Entity('{{ camelCase name }}s');
+const {{ camelCase name }}ListSchema = [{{ camelCase name }}Schema];
+
+export const normalize{{ properCase name}}s = (data) => normalize(data, {{ camelCase name }}ListSchema);
+
+export const denormalize{{ properCase name }}s = (data, entities) => {
+  const newEntities = entities || { {{ camelCase name }}s: data };
+  const denormalizedData = denormalize(
+    Object.keys(data),
+    {{ camelCase name }}ListSchema,
+    newEntities
+  );
+  return denormalizedData || [];
+};

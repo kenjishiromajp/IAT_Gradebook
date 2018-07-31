@@ -1,0 +1,28 @@
+import {
+  LOAD_{{ constantCase name }}S,
+  LOAD_{{ constantCase name }}S_ERROR,
+  LOAD_{{ constantCase name }}S_SUCCESS,
+} from './constants';
+
+// {{ constantCase name }} LOAD
+
+export function load{{ properCase name }}s() {
+  return {
+    type: LOAD_{{ constantCase name }}S,
+  };
+}
+
+export function {{ camelCase name }}sLoaded({{ camelCase name }}s) {
+  return {
+    type: LOAD_{{ constantCase name }}S_SUCCESS,
+    {{ camelCase name }}s,
+  };
+}
+
+export function load{{ properCase name }}sError(error) {
+  return {
+    type: LOAD_{{ constantCase name }}S_ERROR,
+    error,
+  };
+}
+// END {{ constantCase name }} LOAD

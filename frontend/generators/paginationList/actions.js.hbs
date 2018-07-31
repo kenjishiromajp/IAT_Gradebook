@@ -1,0 +1,32 @@
+import {
+  LOAD_{{ constantCase name }}S,
+  LOAD_{{ constantCase name }}S_ERROR,
+  LOAD_{{ constantCase name }}S_SUCCESS,
+} from './constants';
+
+// {{ constantCase name }} LOAD
+
+export function load{{ properCase name }}s(params) {
+  return {
+    type: LOAD_{{ constantCase name }}S,
+    params,
+  };
+}
+
+export function {{ camelCase name }}sLoaded({{ camelCase name }}s, totalCount, limit, offset) {
+  return {
+    type: LOAD_{{ constantCase name }}S_SUCCESS,
+    {{ camelCase name }}s,
+    totalCount,
+    limit,
+    offset,
+  };
+}
+
+export function load{{ properCase name }}sError(error) {
+  return {
+    type: LOAD_{{ constantCase name }}S_ERROR,
+    error,
+  };
+}
+// END {{ constantCase name }} LOAD

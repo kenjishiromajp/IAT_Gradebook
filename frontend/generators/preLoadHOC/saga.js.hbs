@@ -1,0 +1,18 @@
+import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { getRequest } from '../../utils/request';
+import { API_URL } from '../../utils/constants';
+import { LOAD_{{ constantCase name }}_BY_ID } from './constants';
+import { load{{ properCase name }}ByIdError, {{ camelCase name }}ByIdLoaded } from './actions';
+
+export default function* {{ camelCase name }}Data() {
+  yield all([takeLatest(LOAD_{{ constantCase name }}_BY_ID, load{{ properCase name }}ById)]);
+}
+
+export function* load{{ properCase name }}ById({ id }) {
+  try {
+    const {{ camelCase name }} = yield call(getRequest, `${API_URL}/{{ camelCase name }}/${id}`);
+    yield put({{ camelCase name }}ByIdLoaded({{ camelCase name }}.data));
+  } catch (error) {
+    yield put(load{{ properCase name }}ByIdError(error));
+  }
+}

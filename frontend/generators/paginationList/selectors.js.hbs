@@ -1,0 +1,20 @@
+import { createSelector } from 'reselect';
+import { denormalize{{ properCase name }}s } from './normalizr';
+
+export const select{{ properCase name }}s = (state) => state.get('{{ camelCase name }}s');
+
+export const makeSelect{{ properCase name }}sLoading = () =>
+  createSelector(select{{ properCase name }}s, ({{ camelCase name }}State) => {{ camelCase name }}State.get('loading'));
+
+export const makeSelectError = () =>
+  createSelector(select{{ properCase name }}s, ({{ camelCase name }}State) => {{ camelCase name }}State.get('error'));
+
+export const makeSelect{{ properCase name }}s = () =>
+  createSelector(select{{ properCase name }}s, ({{ camelCase name }}State) =>
+    denormalize{{ properCase name }}s({{ camelCase name }}State.get('{{ camelCase name }}s').toJS()));
+
+export const makeSelectLimit = () =>
+  createSelector(select{{ properCase name }}s, ({{ camelCase name }}State) => {{ camelCase name }}State.get('limit'));
+
+export const makeSelectTotalCount = () =>
+  createSelector(select{{ properCase name }}s, ({{ camelCase name }}State) => {{ camelCase name }}State.get('totalCount'));

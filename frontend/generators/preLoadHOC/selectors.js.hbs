@@ -1,0 +1,15 @@
+import { createSelector } from 'reselect';
+
+export const select{{ properCase name }} = (state) => state.get('{{ camelCase name }}');
+
+export const makeSelectLoading = () =>
+  createSelector(select{{ properCase name }}, ({{ camelCase name }}State) =>
+    {{ camelCase name }}State.get('loading'));
+
+export const makeSelectError = () =>
+  createSelector(select{{ properCase name }}, ({{ camelCase name }}State) =>
+    {{ camelCase name }}State.get('error'));
+
+export const makeSelectSuccess = () =>
+  createSelector(select{{ properCase name }}, ({{ camelCase name }}State) =>
+    {{ camelCase name }}State.get('success'));

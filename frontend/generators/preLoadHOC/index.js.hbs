@@ -1,0 +1,67 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { Card } from 'antd';
+
+import openNotificationWithIcon from '../../utils/antd-notification';
+import {
+  makeSelectError,
+  makeSelectLoading,
+  makeSelectSuccess,
+} from './selectors';
+import { load{{ properCase name }}ById } from './actions';
+
+export const with{{ properCase name }} = (WrappedComponent) => {
+  const with{{ properCase name }}Component = class extends React.Component {
+    componentDidMount() {
+      const { load{{ properCase name }}ById, {{ camelCase name }}Id } = this.props;
+      load{{ properCase name }}ById({{ camelCase name }}Id);
+    }
+    componentDidUpdate(prevProps) {
+      const { error, success } = this.props;
+      if (error && (prevProps.error !== error)) {
+        openNotificationWithIcon('error', error.toString());
+      }
+      if (success && (prevProps.success !== success)) {
+        openNotificationWithIcon('success', success.message);
+      }
+    }
+    render() {
+      const {
+        loading, success, error, {{ camelCase name }}Id, ...restProps
+      } = this.props;
+
+      if (success) {
+        restProps.{{ camelCase name }} = success.{{ camelCase name }};
+      }
+
+      return (
+        <Card loading={loading} className="card-no-padding card-no-border card-no-background">
+          <WrappedComponent {...restProps} />
+        </Card>
+      );
+    }
+  };
+
+  with{{ properCase name }}Component.propTypes = {
+    {{ camelCase name }}Id: PropTypes.number.isRequired,
+    error: PropTypes.object,
+    success: PropTypes.object,
+    loading: PropTypes.bool,
+  };
+
+  const mapStateToProps = createStructuredSelector({
+    error: makeSelectError(),
+    loading: makeSelectLoading(),
+    success: makeSelectSuccess(),
+  });
+
+  const mapDispatchToProps = (dispatch) => ({
+    load{{ properCase name }}ById: ({{ camelCase name }}Id) => dispatch(load{{ properCase name }}ById({{ camelCase name }}Id)),
+  });
+
+  const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+  return withConnect(with{{ properCase name }}Component);
+};

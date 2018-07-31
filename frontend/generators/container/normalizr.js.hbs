@@ -1,0 +1,8 @@
+import { normalize, schema } from 'normalizr';
+
+const {{ camelCase name }}Schema = new schema.Entity('{{ camelCase name }}s');
+const {{ camelCase name }}ListSchema = [{{ camelCase name }}Schema];
+
+const normalize{{ properCase name }}s = (data) => normalize(data, {{ camelCase name }}ListSchema);
+
+export default normalize{{ properCase name }}s;

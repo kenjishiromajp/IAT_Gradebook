@@ -1,0 +1,28 @@
+import {
+  LOAD_{{ constantCase name }}_BY_ID,
+  LOAD_{{ constantCase name }}_BY_ID_ERROR,
+  LOAD_{{ constantCase name }}_BY_ID_SUCCESS,
+} from './constants';
+
+// {{ properCase name }}
+export function load{{ properCase name }}ById(id) {
+  return {
+    type: LOAD_{{ constantCase name }}_BY_ID,
+    id,
+  };
+}
+
+export function load{{ properCase name }}ByIdError(error) {
+  return {
+    type: LOAD_{{ constantCase name }}_BY_ID_ERROR,
+    error,
+  };
+}
+
+export function {{ camelCase name }}ByIdLoaded({{ camelCase name }}) {
+  return {
+    type: LOAD_{{ constantCase name }}_BY_ID_SUCCESS,
+    {{ camelCase name }},
+  };
+}
+// END {{ properCase name }}

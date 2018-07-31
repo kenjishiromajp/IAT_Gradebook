@@ -1,0 +1,32 @@
+import { fromJS } from 'immutable';
+import {
+  LOAD_{{ constantCase name }}S,
+  LOAD_{{ constantCase name }}S_SUCCESS,
+  LOAD_{{ constantCase name }}S_ERROR,
+} from './constants';
+
+const initialState = fromJS({
+  loading: false,
+  error: null,
+  {{ camelCase name }}s: {},
+  totalCount: 0,
+  limit: 15,
+});
+
+function {{ camelCase name }}Reducer(state = initialState, action) {
+  switch (action.type) {
+    case LOAD_{{ constantCase name }}S:
+      return state.set('loading', true).set('error', null);
+    case LOAD_{{ constantCase name }}S_SUCCESS:
+      return state.set('loading', false)
+        .set('{{ camelCase name }}s', action.{{ camelCase name }}s)
+        .set('totalCount', action.totalCount)
+        .set('limit', action.limit);
+    case LOAD_{{ constantCase name }}S_ERROR:
+      return state.set('loading', false).set('error', action.error);
+    default:
+      return state;
+  }
+}
+
+export default {{ camelCase name }}Reducer;

@@ -1,0 +1,47 @@
+import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { deleteRequest, putRequest, postRequest } from '../../utils/request';
+import { CREATE_{{ constantCase name }}, EDIT_{{ constantCase name }}, REMOVE_{{ constantCase name }} } from './constants';
+import {
+  create{{ properCase name }}FormError,
+  edit{{ properCase name }}Error,
+  {{ camelCase name }}FormCreated,
+  {{ camelCase name }}Edited,
+  {{ camelCase name }}Removed,
+  remove{{ properCase name }}Error,
+} from './actions';
+import { API_URL } from '../../utils/constants';
+
+export default function* {{ camelCase name }}Data() {
+  yield all([
+    takeLatest(CREATE_{{ constantCase name }}, create{{ properCase name }}Form),
+    takeLatest(EDIT_{{ constantCase name }}, edit{{ properCase name }}Form),
+    takeLatest(REMOVE_{{ constantCase name }}, remove{{ properCase name }}),
+  ]);
+}
+
+export function* create{{ properCase name }}Form({ {{ camelCase name }} }) {
+  try {
+    const {{ camelCase name }}Form = yield call(postRequest, `${API_URL}/{{ camelCase name }}`, {{ camelCase name }});
+    yield put({{ camelCase name }}FormCreated({{ camelCase name }}Form.data));
+  } catch (error) {
+    yield put(create{{ properCase name }}FormError(error));
+  }
+}
+
+export function* edit{{ properCase name }}Form({ {{ camelCase name }} }) {
+  try {
+    const {{ camelCase name }}Form = yield call(putRequest, `${API_URL}/{{ camelCase name }}/${ {{ camelCase name }}.id}`, {{ camelCase name }});
+    yield put({{ camelCase name }}Edited({{ camelCase name }}Form.data));
+  } catch (error) {
+    yield put(edit{{ properCase name }}Error(error));
+  }
+}
+
+export function* remove{{ properCase name }}({ id }) {
+  try {
+    yield call(deleteRequest, `${API_URL}/{{ camelCase name }}/${id}`);
+    yield put({{ camelCase name }}Removed(id));
+  } catch (error) {
+    yield put(remove{{ properCase name }}Error(id, error));
+  }
+}

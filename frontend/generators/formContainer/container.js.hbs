@@ -1,0 +1,81 @@
+/**
+ *
+ * {{ properCase name }} Form Page
+ *
+ */
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import {{ properCase name }}Form from '../../components/{{ properCase name }}Form';
+
+import {
+  makeSelectError,
+  makeSelect{{ properCase name }}Loading,
+  makeSelectSuccess,
+} from './selectors';
+import { create{{ properCase name }}, edit{{ properCase name }} } from './actions';
+import openNotificationWithIcon from '../../utils/antd-notification';
+
+class {{ properCase name }}FormContainer extends Component {
+  componentDidUpdate(prevProps) {
+    const { error, success } = this.props;
+    if (error && (prevProps.error !== error)) {
+      openNotificationWithIcon('error', error.toString());
+    }
+    if (success && (prevProps.success !== success)) {
+      openNotificationWithIcon('success', success.message);
+    }
+  }
+  handleCancel = () => {
+    this.props.onCancel();
+  };
+  handleSubmit = ({{ camelCase name }}Values) => {
+    const { {{ camelCase name }} } = this.props;
+    if ({{ camelCase name }}.id) {
+      return this.props.edit{{ properCase name }}({{ camelCase name }}Values);
+    }
+    return this.props.create{{ properCase name }}({{ camelCase name }}Values);
+  };
+  render() {
+    const { handleSubmit, handleCancel } = this;
+    const { error, success, ...restProps } = this.props;
+    return (
+      <{{ properCase name }}Form
+        {...restProps}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+      />
+    );
+  }
+}
+
+{{ properCase name }}FormContainer.propTypes = {
+  edit{{ properCase name }}: PropTypes.func.isRequired,
+  create{{ properCase name }}: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+  success: PropTypes.object,
+  {{ camelCase name }}: PropTypes.shape({
+{{#each (transformInArray properties)}}
+    id: PropTypes.number,
+    {{ camelCase this }}: PropTypes.string,
+{{/each}}
+  }),
+};
+
+const mapStateToProps = createStructuredSelector({
+  error: makeSelectError(),
+  loading: makeSelect{{ properCase name }}Loading(),
+  success: makeSelectSuccess(),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  edit{{ properCase name }}: ({{ camelCase name }}) => dispatch(edit{{ properCase name }}({{ camelCase name }})),
+  create{{ properCase name }}: ({{ camelCase name }}) => dispatch(create{{ properCase name }}({{ camelCase name }})),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+export default compose(withConnect)({{ properCase name }}FormContainer);

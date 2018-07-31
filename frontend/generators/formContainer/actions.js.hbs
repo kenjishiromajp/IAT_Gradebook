@@ -1,0 +1,81 @@
+import {
+  REMOVE_{{ constantCase name }},
+  REMOVE_{{ constantCase name }}_ERROR,
+  REMOVE_{{ constantCase name }}_SUCCESS,
+  CREATE_{{ constantCase name }},
+  CREATE_{{ constantCase name }}_ERROR,
+  CREATE_{{ constantCase name }}_SUCCESS,
+  EDIT_{{ constantCase name }},
+  EDIT_{{ constantCase name }}_ERROR,
+  EDIT_{{ constantCase name }}_SUCCESS,
+} from './constants';
+
+// CREATE {{ constantCase name }}_FORM
+export function create{{ properCase name }}({{ camelCase name }}) {
+  return {
+    type: CREATE_{{ constantCase name }},
+    {{ camelCase name }},
+  };
+}
+
+export function create{{ properCase name }}FormError(error) {
+  return {
+    type: CREATE_{{ constantCase name }}_ERROR,
+    error,
+  };
+}
+
+export function {{ camelCase name }}Created({{ camelCase name }}) {
+  return {
+    type: CREATE_{{ constantCase name }}_SUCCESS,
+    {{ camelCase name }},
+  };
+}
+// END CREATE {{ constantCase name }}_FORM
+
+// EDIT {{ constantCase name }}_FORM
+export function edit{{ properCase name }}({{ camelCase name }}) {
+  return {
+    type: EDIT_{{ constantCase name }},
+    {{ camelCase name }},
+  };
+}
+
+export function edit{{ properCase name }}Error(error) {
+  return {
+    type: EDIT_{{ constantCase name }}_ERROR,
+    error,
+  };
+}
+
+export function {{ camelCase name }}Edited({{ camelCase name }}) {
+  return {
+    type: EDIT_{{ constantCase name }}_SUCCESS,
+    {{ camelCase name }},
+  };
+}
+// END EDIT {{ constantCase name }}_FORM
+
+// REMOVE {{ constantCase name }}_FORM
+export function remove{{ properCase name }}Form(id) {
+  return {
+    type: REMOVE_{{ constantCase name }},
+    id,
+  };
+}
+
+export function remove{{ properCase name }}Error(error) {
+  return {
+    type: REMOVE_{{ constantCase name }}_ERROR,
+    error,
+  };
+}
+
+export function {{ camelCase name }}Removed(id) {
+  return {
+    type: REMOVE_{{ constantCase name }}_SUCCESS,
+    id,
+  };
+}
+
+// END REMOVE {{ constantCase name }}_FORM

@@ -1,0 +1,34 @@
+import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { fromJS } from 'immutable';
+import { getRequest } from '../../utils/request';
+import {
+  LOAD_{{ constantCase name }}S,
+} from './constants';
+import {
+  load{{ properCase name }}sError,
+  {{ camelCase name }}sLoaded,
+} from './actions';
+import { normalize{{ properCase name }}s } from './normalizr';
+import { API_URL } from '../../utils/constants';
+
+export default function* {{ camelCase name }}sSaga() {
+  yield all([
+    takeLatest(LOAD_{{ constantCase name }}S, getAll{{ properCase name }}s),
+  ]);
+}
+
+export function* getAll{{ properCase name }}s({ params }) {
+  try {
+    const response = yield call(getRequest, `${API_URL}/{{ camelCase name }}s`, params);
+    const { total: totalCount, limit } = response.data;
+    let {{ camelCase name }}s = response.data.items.length ? normalize{{ properCase name }}s(response.data.items).entities.{{ camelCase name }}s : {};
+    {{ camelCase name }}s = fromJS({{ camelCase name }}s);
+    yield put({{ camelCase name }}sLoaded(
+      {{ camelCase name }}s,
+      totalCount,
+      limit,
+    ));
+  } catch (error) {
+    yield put(load{{ properCase name }}sError(error));
+  }
+}

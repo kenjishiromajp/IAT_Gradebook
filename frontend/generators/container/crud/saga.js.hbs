@@ -1,0 +1,75 @@
+import { takeLatest, call, put, all } from 'redux-saga/effects';
+import request, {
+  deleteRequest,
+  putRequest,
+  postRequest,
+} from '../../utils/request';
+import { CREATE_{{ constantCase name }}, EDIT_{{ constantCase name }}, LOAD_{{ constantCase name }}S, REMOVE_{{ constantCase name }} } from './constants';
+import {
+  create{{ properCase name }}Error,
+  edit{{ properCase name }}Error,
+  load{{ properCase name }}sError,
+  {{ camelCase name }}Created,
+  {{ camelCase name }}Edited,
+  {{ camelCase name }}Removed,
+  {{ camelCase name }}sLoaded,
+  remove{{ properCase name }}Error,
+} from './actions';
+import { normalize{{ properCase name }}s } from './normalizr';
+import { fromJS } from '../../../node_modules/immutable/dist/immutable';
+import { API_URL } from '../../utils/constants';
+
+export default function* {{ camelCase name }}sData() {
+  yield all([
+    takeLatest(LOAD_{{ constantCase name }}S, getAll{{ properCase name }}s),
+    takeLatest(CREATE_{{ constantCase name }}, create{{ properCase name }}),
+    takeLatest(EDIT_{{ constantCase name }}, edit{{ properCase name }}),
+    takeLatest(REMOVE_{{ constantCase name }}, remove{{ properCase name }}),
+  ]);
+}
+
+export function* getAll{{ properCase name }}s() {
+  try {
+    let {{ camelCase name }}s = yield call(request, `${API_URL}/{{ camelCase name }}s`);
+    {{ camelCase name }}s = {{ camelCase name }}s.length ? normalize{{ properCase name }}s({{ camelCase name }}s).entities.{{ camelCase name }}s : {};
+    {{ camelCase name }}s = fromJS({{ camelCase name }}s);
+    yield put({{ camelCase name }}sLoaded({{ camelCase name }}s));
+  } catch (error) {
+    yield put(load{{ properCase name }}sError(error));
+  }
+}
+
+export function* create{{ properCase name }}({ resolve, reject, ...action }) {
+  try {
+    const {{ camelCase name }} = yield call(postRequest, `${API_URL}/{{ camelCase name }}s`, action.{{ camelCase name }});
+    yield put({{ camelCase name }}Created({{ camelCase name }}));
+    resolve({{ camelCase name }});
+  } catch (error) {
+    yield put(create{{ properCase name }}Error(error));
+    reject(error);
+  }
+}
+
+export function* edit{{ properCase name }}({ resolve, reject, ...action }) {
+  try {
+    const {{ camelCase name }} = yield call(
+      putRequest,
+      `${API_URL}/{{ camelCase name }}s/${action.{{ camelCase name }}.id}`,
+      action.{{ camelCase name }}
+    );
+    yield put({{ camelCase name }}Edited({{ camelCase name }}));
+    resolve({{ camelCase name }});
+  } catch (error) {
+    yield put(edit{{ properCase name }}Error(error));
+    reject(error);
+  }
+}
+
+export function* remove{{ properCase name }}({ id }) {
+  try {
+    yield call(deleteRequest, `${API_URL}/{{ camelCase name }}s/${id}`);
+    yield put({{ camelCase name }}Removed(id));
+  } catch (error) {
+    yield put(remove{{ properCase name }}Error(id, error));
+  }
+}

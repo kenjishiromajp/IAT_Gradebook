@@ -1,0 +1,57 @@
+import { fromJS } from 'immutable';
+import {
+  REMOVE_{{ constantCase name }},
+  REMOVE_{{ constantCase name }}_SUCCESS,
+  REMOVE_{{ constantCase name }}_ERROR,
+  CREATE_{{ constantCase name }},
+  CREATE_{{ constantCase name }}_SUCCESS,
+  CREATE_{{ constantCase name }}_ERROR,
+  EDIT_{{ constantCase name }}_SUCCESS,
+  EDIT_{{ constantCase name }},
+  EDIT_{{ constantCase name }}_ERROR,
+} from './constants';
+
+const initialState = fromJS({
+  loading: false,
+  error: null,
+  success: null,
+});
+
+function {{ camelCase name }}FormReducer(state = initialState, action) {
+  switch (action.type) {
+    case REMOVE_{{ constantCase name }}:
+      return state.set('loading', true).set('error', null);
+    case REMOVE_{{ constantCase name }}_SUCCESS:
+      return state
+        .set('loading', false)
+        .deleteIn(['{{ camelCase name }}', action.id.toString()]);
+    case REMOVE_{{ constantCase name }}_ERROR:
+      return state.set('loading', false).set('error', action.error);
+    case CREATE_{{ constantCase name }}:
+      return state.set('loading', true).set('error', null);
+    case CREATE_{{ constantCase name }}_SUCCESS:
+      return state
+        .set('success', {
+          {{ camelCase name }}: action.{{ camelCase name }},
+          message: `{{ properCase name }} ${action.{{ camelCase name }}.id} criado com sucesso!`,
+        })
+        .set('loading', false);
+    case CREATE_{{ constantCase name }}_ERROR:
+      return state.set('loading', false).set('error', action.error);
+    case EDIT_{{ constantCase name }}:
+      return state.set('loading', true).set('error', null);
+    case EDIT_{{ constantCase name }}_SUCCESS:
+      return state
+        .set('success', {
+          {{ camelCase name }}: action.{{ camelCase name }},
+          message: `{{ properCase name }} ${action.{{ camelCase name }}.id} editado com sucesso!`,
+        })
+        .set('loading', false);
+    case EDIT_{{ constantCase name }}_ERROR:
+      return state.set('loading', false).set('error', action.error);
+    default:
+      return state;
+  }
+}
+
+export default {{ camelCase name }}FormReducer;

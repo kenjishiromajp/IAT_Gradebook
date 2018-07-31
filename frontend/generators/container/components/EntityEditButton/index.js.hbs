@@ -1,0 +1,73 @@
+/**
+ *
+ * {{ properCase name }}EditButton
+ *
+ */
+
+import React, { Component } from 'react';
+import { Button, Form, Modal } from 'antd';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import {{ properCase name }}Form from '../{{ properCase name }}Form';
+import { edit{{ properCase name }} } from '../../actions';
+
+class {{ properCase name }}EditButton extends Component {
+  state = {
+    loading: false,
+    modalVisible: false,
+  };
+  toggleModal = () => {
+    this.setState({
+      modalVisible: !this.state.modalVisible,
+    });
+  };
+  submit = ({{ camelCase name }}Data) => {
+    if (this.state.loading) {
+      return;
+    }
+    this.setState({
+      loading: true,
+    });
+    this.props.edit{{ properCase name }}({{ camelCase name }}Data);
+  };
+  render() {
+    const { loading } = this.state;
+    const { {{ camelCase name }} } = this.props;
+    return (
+      <span className="{{ camelCase name }}-edit-button">
+        <Button onClick={() => this.toggleModal()}>Edit {{ properCase name }}</Button>
+        <Modal
+          wrapClassName="vertical-center-modal"
+          visible={this.state.modalVisible}
+          footer={null}
+          onCancel={() => this.toggleModal()}
+        >
+          <h2>
+            Edit {{ properCase name }} <strong>#{ {{ camelCase name }}.id}</strong>
+          </h2>
+          <{{ properCase name }}Form
+            {{ camelCase name }}={ {{ camelCase name }} }
+            ref={({{ lowerCase name }}form) => (this.{{ lowerCase name }}form = {{ lowerCase name }}form)}
+            loading={loading}
+            onCancel={() => this.toggleModal()}
+            onSubmit={({{ camelCase name }}Data) => this.submit({{ camelCase name }}Data)}
+          />
+        </Modal>
+      </span>
+    );
+  }
+}
+{{ properCase name }}EditButton.propTypes = {
+  edit{{ properCase name }}: PropTypes.func.isRequired,
+  {{ camelCase name }}: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = () => ({});
+const mapDispatchToProps = (dispatch) => ({
+  edit{{ properCase name }}: ({{ camelCase name }}) =>
+    new Promise((resolve, reject) => dispatch(edit{{ properCase name }}({{ camelCase name }}, resolve, reject))),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)({{ properCase name }}EditButton);

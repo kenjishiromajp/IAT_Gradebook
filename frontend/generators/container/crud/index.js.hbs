@@ -1,0 +1,118 @@
+/**
+*
+* {{ titleCase name }} Page
+*
+*/
+import React, { Component } from 'react';
+import { Card, Icon, Row, notification, Button, Table, Modal } from 'antd';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
+
+import reducer from './reducer';
+import saga from './saga';
+import injectReducer from '../../utils/injectReducer';
+import injectSaga from '../../utils/injectSaga';
+import {
+  makeSelectError,
+  makeSelect{{ properCase name }}s,
+  makeSelect{{ properCase name }}sLoading,
+} from './selectors';
+import { load{{ properCase name }}s, remove{{ properCase name }} } from './actions';
+
+import {{ properCase name }}CreateButton from './components/{{ properCase name }}CreateButton';
+import {{ properCase name }}EditButton from './components/{{ properCase name }}EditButton';
+import {{ properCase name }}List from './components/{{ properCase name }}List';
+
+const { confirm } = Modal;
+
+class {{ properCase name }}Page extends Component {
+  componentDidMount() {
+    this.props.load{{ properCase name }}s();
+  }
+  componentDidUpdate() {
+    if (!this.props.error) {
+      return;
+    }
+    const style = { color: '#FF0000' };
+    notification.open({
+      message: 'Error',
+      description: this.props.error.toString(),
+      icon: <Icon type="frown-o" style={style} />,
+    });
+  }
+  remove{{ properCase name }} = ({{ camelCase name }}) => {
+    confirm({
+      okText: 'Yes',
+      okType: 'danger',
+      title: (
+        <span>
+          Do you want to delete -{' '}
+          <strong>
+            #{ {{ camelCase name }}.id} { {{ camelCase name }}.title}
+          </strong>
+        </span>
+      ),
+      onOk: () => {
+        this.props.remove{{ properCase name }}({{ camelCase name }}.id);
+      },
+    });
+  };
+  actionColumn = (text, {{ camelCase name }}) => (
+    <span>
+      <{{ properCase name }}EditButton {{ camelCase name }}={ {{ camelCase name }} } />
+      <Button type="danger" onClick={() => this.remove{{ properCase name }}({{ camelCase name }})}>
+        Delete
+      </Button>
+    </span>
+  );
+  renderHead() {
+    return (
+      <Helmet>
+        <title>{{ properCase name }} Page</title>
+      </Helmet>
+    );
+  }
+  render() {
+    const { renderHead } = this;
+    const { loading, {{ camelCase name }}s } = this.props;
+    return (
+      <div>
+        {renderHead()}
+        <Row type="flex" justify="space-between" align="middle">
+          <h1>{{ properCase name }} Page</h1>
+          <{{ properCase name }}CreateButton />
+        </Row>
+        <Card loading={loading}>
+          <{{ properCase name }}List {{ camelCase name }}s={ {{ camelCase name }}s} actionColumn={this.actionColumn} />
+        </Card>
+      </div>
+    );
+  }
+}
+
+{{ properCase name }}Page.propTypes = {
+  error: PropTypes.object,
+  {{ camelCase name }}s: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+  load{{ properCase name }}s: PropTypes.func.isRequired,
+  remove{{ properCase name }}: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({
+  error: makeSelectError(),
+  {{ camelCase name }}s: makeSelect{{ properCase name }}s(),
+  loading: makeSelect{{ properCase name }}sLoading(),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  load{{ properCase name }}s: () => dispatch(load{{ properCase name }}s()),
+  remove{{ properCase name }}: (id) => dispatch(remove{{ properCase name }}(id)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withReducer = injectReducer({ key: '{{ camelCase name }}s', reducer });
+const withSaga = injectSaga({ key: '{{ camelCase name }}s', saga });
+export default compose(withReducer, withSaga, withConnect)({{ properCase name }}Page);

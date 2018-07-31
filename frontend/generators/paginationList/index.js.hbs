@@ -1,0 +1,109 @@
+/**
+*
+* Alerts Emitted Page
+*
+*/
+import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import PropTypes from 'prop-types';
+import { Pagination, Row } from 'antd';
+
+import injectReducer from '../../utils/injectReducer';
+import injectSaga from '../../utils/injectSaga';
+import {
+  makeSelectError,
+  makeSelect{{ properCase name }}s,
+  makeSelect{{ properCase name }}sLoading,
+  makeSelectLimit,
+  makeSelectTotalCount,
+} from './selectors';
+import { load{{ properCase name }}s } from './actions';
+import reducer from './reducer';
+import saga from './saga';
+import openNotificationWithIcon from '../../utils/antd-notification';
+import LoadingCard from '../../components/LoadingCard/index';
+import {{ properCase name }}List from '../../components/{{ properCase name }}List';
+
+class {{ properCase name }}ListContainer extends Component {
+  state = {
+    limit: 15,
+    currentPage: 1,
+  };
+  componentDidMount() {
+    const { limit, currentPage } = this.state;
+    this.load{{ properCase name }}s(
+      currentPage,
+      limit,
+    );
+  }
+  componentDidUpdate() {
+    const { error } = this.props;
+    if (error) {
+      openNotificationWithIcon('error', error.toString());
+    }
+  }
+  onChangePage = (currentPage) => {
+    this.setState({
+      currentPage,
+    });
+    const { limit } = this.state;
+    this.load{{ properCase name }}s(currentPage, limit);
+  };
+  getOffset = (page, limit) => (page - 1) * limit;
+  load{{ properCase name }}s = (page, limit) => {
+    const offset = this.getOffset(page, limit);
+    this.props.load{{ properCase name }}s({
+      offset,
+      limit,
+    });
+  };
+  render() {
+    const {
+      loading, {{ camelCase name }}s, totalCount, limit,
+    } = this.props;
+    const { currentPage } = this.state;
+    return (
+      <div className="{{ dashCase name }}">
+        <LoadingCard loading={loading}>
+          <{{ properCase name }}List {{ camelCase name }}s={ {{ camelCase name }}s } />
+        </LoadingCard>
+        <Row type="flex" justify="end">
+          <Pagination
+            onChange={this.onChangeRangeDate}
+            pageSize={limit}
+            current={currentPage}
+            total={totalCount}
+          />
+        </Row>
+      </div>
+    );
+  }
+}
+
+{{ properCase name }}ListContainer.propTypes = {
+  error: PropTypes.object,
+  {{ camelCase name }}s: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+  load{{ properCase name }}s: PropTypes.func.isRequired,
+  totalCount: PropTypes.number,
+  limit: PropTypes.number,
+};
+
+const mapStateToProps = createStructuredSelector({
+  error: makeSelectError(),
+  {{ camelCase name }}s: makeSelect{{ properCase name }}s(),
+  loading: makeSelect{{ properCase name }}sLoading(),
+  limit: makeSelectLimit(),
+  totalCount: makeSelectTotalCount(),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  load{{ properCase name }}s: (params) => dispatch(load{{ properCase name }}s(params)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withReducer = injectReducer({ key: '{{ camelCase name }}s', reducer });
+const withSaga = injectSaga({ key: '{{ camelCase name }}s', saga });
+export default compose(withReducer, withSaga, withConnect)({{ properCase name }}ListContainer);

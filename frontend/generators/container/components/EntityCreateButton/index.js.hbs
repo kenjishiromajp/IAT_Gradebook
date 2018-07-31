@@ -1,0 +1,77 @@
+/**
+*
+* {{ properCase name }}CreateButton
+*
+*/
+
+import React, { Component } from 'react';
+import { Button, Form, Modal } from 'antd';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import {{ properCase name }}Form from '../{{ properCase name }}Form';
+import { create{{ properCase name }} } from '../../actions';
+
+class {{ properCase name }}CreateButton extends Component {
+  state = {
+    loading: false,
+    modalVisible: false,
+  };
+  toggleModal = () => {
+    this.setState({
+      modalVisible: !this.state.modalVisible,
+    });
+  };
+  submit = ({{ camelCase name }}Data) => {
+    if (this.state.loading) {
+      return;
+    }
+    this.setState({
+      loading: true,
+    });
+    this.props.create{{ properCase name }}({{ camelCase name }}Data).then(() => {
+      this.setState({
+        loading: false,
+        modalVisible: false,
+      });
+      this.{{ camelCase name }}form.resetFields();
+    });
+  };
+  render() {
+    const { loading } = this.state;
+    return (
+      <div className="{{ dashCase name }}-create-button">
+        <Button type="primary" onClick={() => this.toggleModal()}>
+          Create {{ titleCase name }}
+        </Button>
+        <Modal
+          wrapClassName="vertical-center-modal"
+          visible={this.state.modalVisible}
+          footer={null}
+          onCancel={() => this.toggleModal()}
+        >
+          <h2>Create {{ titleCase name }}</h2>
+          <{{ properCase name }}Form
+            ref={({{ lowerCase name }}form) => (this.{{ lowerCase name }}form = {{ lowerCase name }}form)}
+            loading={loading}
+            onCancel={() => this.toggleModal()}
+            onSubmit={({{ camelCase name }}Data) => this.submit({{ camelCase name }}Data)}
+          />
+        </Modal>
+      </div>
+    );
+  }
+}
+{{ properCase name }}CreateButton.propTypes = {
+  create{{ properCase name }}: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = () => ({});
+const mapDispatchToProps = (dispatch) => ({
+  create{{ properCase name }}: ({{ camelCase name }}) =>
+    new Promise((resolve, reject) =>
+      dispatch(create{{ properCase name }}({{ camelCase name }}, resolve, reject))),
+});
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)({{ properCase name }}CreateButton);

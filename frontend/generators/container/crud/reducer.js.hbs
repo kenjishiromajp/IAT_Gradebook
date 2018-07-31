@@ -1,0 +1,60 @@
+import { fromJS } from 'immutable';
+import {
+  LOAD_{{ constantCase name }}S,
+  LOAD_{{ constantCase name }}S_SUCCESS,
+  LOAD_{{ constantCase name }}S_ERROR,
+  REMOVE_{{ constantCase name }},
+  REMOVE_{{ constantCase name }}_SUCCESS,
+  REMOVE_{{ constantCase name }}_ERROR,
+  CREATE_{{ constantCase name }},
+  CREATE_{{ constantCase name }}_SUCCESS,
+  CREATE_{{ constantCase name }}_ERROR,
+  EDIT_{{ constantCase name }}_SUCCESS,
+  EDIT_{{ constantCase name }},
+  EDIT_{{ constantCase name }}_ERROR,
+} from './constants';
+
+const initialState = fromJS({
+  loading: false,
+  error: null,
+  {{ camelCase name }}s: {},
+});
+
+function {{ camelCase name }}Reducer(state = initialState, action) {
+  switch (action.type) {
+    case LOAD_{{ constantCase name }}S:
+      return state.set('loading', true).set('error', null);
+    case LOAD_{{ constantCase name }}S_SUCCESS:
+      return state.set('loading', false).set('{{ camelCase name }}s', action.{{ camelCase name }}s);
+    case LOAD_{{ constantCase name }}S_ERROR:
+      return state.set('loading', false).set('error', action.error);
+    case REMOVE_{{ constantCase name }}:
+      return state.set('loading', true).set('error', null);
+    case REMOVE_{{ constantCase name }}_SUCCESS:
+      return state
+        .set('loading', false)
+        .deleteIn(['{{ camelCase name }}s', action.id.toString()]);
+    case REMOVE_{{ constantCase name }}_ERROR:
+      return state.set('loading', false).set('error', action.error);
+    case CREATE_{{ constantCase name }}:
+      return state.set('loading', true).set('error', null);
+    case CREATE_{{ constantCase name }}_SUCCESS:
+      return state
+        .set('loading', false)
+        .mergeDeep({ {{ camelCase name }}s: { [action.{{ camelCase name }}.id.toString()]: action.{{ camelCase name }} } });
+    case CREATE_{{ constantCase name }}_ERROR:
+      return state.set('loading', false).set('error', action.error);
+    case EDIT_{{ constantCase name }}:
+      return state.set('loading', true).set('error', null);
+    case EDIT_{{ constantCase name }}_SUCCESS:
+      return state
+        .set('loading', false)
+        .mergeDeep({ {{ camelCase name }}s: { [action.{{ camelCase name }}.id.toString()]: action.{{ camelCase name }} } });
+    case EDIT_{{ constantCase name }}_ERROR:
+      return state.set('loading', false).set('error', action.error);
+    default:
+      return state;
+  }
+}
+
+export default {{ camelCase name }}Reducer;

@@ -1,0 +1,28 @@
+/**
+*
+* {{ titleCase name }} Page
+*
+*/
+import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
+import './style.less';
+
+class {{ properCase name }}Page extends Component {
+  renderHead() {
+    return (
+      <Helmet>
+        <title>{{ properCase name }} Page</title>
+      </Helmet>
+    );
+  }
+  render() {
+    const { renderHead } = this;
+    return (
+      <div className="{{ dashCase name }}-page">
+        {renderHead()}
+        <h1>{{ titleCase name }} Page</h1>
+      </div>
+    );
+  }
+}
+export default {{ properCase name }}Page;
