@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use app\models\Mark;
-use app\models\User;
+use yii\data\ActiveDataFilter;
+use yii\data\ActiveDataProvider;
+use Yii;
 
 class MarkController extends CorActiveController
 {
@@ -16,43 +18,32 @@ class MarkController extends CorActiveController
     }
 
     public function actionIndex() {
-        $admin = new User();
-        $admin->load([
-            'Name' => 'Admin',
-            'Email' => 'admin@admin.com',
-            'Password' => 'admin',
-            'Role_ID' => '1',
-        ],'');
-        $admin->save();
+        $requestParams = Yii::$app->getRequest()->getBodyParams();
+        if (empty($requestParams)) {
+            $requestParams = Yii::$app->getRequest()->getQueryParams();
+        }
 
+        $filter = null;
+        $dataFilter = new ActiveDataFilter();
+        if ($dataFilter->load($requestParams)) {
+            $filter = $dataFilter->build();
+            if ($filter === false) {
+                return $dataFilter;
+            }
+        }
 
-        $principal = new User();
-        $principal->load([
-            'Name' => 'Principal',
-            'Email' => 'principal@principal.com',
-            'Password' => 'principal',
-            'Role_ID' => '2',
-        ],'');
-        $principal->save();
+        $modelClass = $this->modelClass;
+        $query = $modelClass::find();
+        if (!empty($filter)) {
+            $query->andWhere($filter);
+        }
 
-        $teacher = new User();
-        $teacher->load([
-            'Name' => 'Principal',
-            'Email' => 'teacher@teacher.com',
-            'Password' => 'teacher',
-            'Role_ID' => '3',
-        ],'');
-        $teacher->save();
-
-        $student = new User();
-        $student->load([
-            'Name' => 'Principal',
-            'Email' => 'student@student.com',
-            'Password' => 'student',
-            'Role_ID' => '4',
-        ],'');
-        $student->save();
-//        $getParams = \Yii::$app->request->get();
-//        return Mark::find()->where($getParams)->all();
+        return new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+            'sort' => [
+                'params' => $requestParams,
+            ],
+        ]);
     }
 }
