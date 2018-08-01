@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "CourseClass".
@@ -24,6 +25,8 @@ class CourseClass extends \app\models\base\CourseClass
     /**
      * {@inheritdoc}
      */
+    public $batata = '';
+
     public static function tableName()
     {
         return 'Class';
@@ -65,12 +68,38 @@ class CourseClass extends \app\models\base\CourseClass
         return $this->hasOne(SubjectGroup::className(), ['ID' => 'SubjectGroup_ID']);
     }
 
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubjects()
+    {
+        $querySubjectsIDs = $this->getSubjectGroup()
+            ->alias('sg')
+            ->leftJoin('Subject_SubjectGroup AS ssg', 'sg.ID = ssg.SubjectGroup_ID')
+            ->select('ssg.Subject_ID');
+        return Subject::find()
+            ->alias('s')
+            ->where(['in', 's.ID', $querySubjectsIDs]);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getStudentClasses()
     {
         return $this->hasMany(StudentClass::className(), ['Class_ID' => 'ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudents()
+    {
+        return $this
+            ->hasMany(Student::className(), ['ID' => 'Student_ID'])
+            ->viaTable('Student_Class',['Class_ID'=>'ID'])
+            ->leftJoin('User', 'Student.User_ID = User.ID');
     }
 
     /**
@@ -104,5 +133,45 @@ class CourseClass extends \app\models\base\CourseClass
     public static function find()
     {
         return new CourseClassQuery(get_called_class());
+    }
+
+    public function fields() {
+        $fields = parent::fields();
+        $fields['Class'] = function($model){
+            return [
+                'Name' =>  $model->Name,
+                'ID' =>  $model->ID,
+            ];
+        };
+        $fields['Subjects'] = function($model){
+            $subjects = [];
+            foreach ($model->getSubjects()->all() as $key => $subject) {
+                $subjects[$key] = $subject->toArray();
+                $subjects[$key]['Tasks'] = $subject->getTasks()->select(['ID','Name','MarkWeightAverage','TotalMark'])->andWhere(['Class_ID'=>$model->ID])->all();
+            }
+            return $subjects;
+        };
+        $fields['Students'] = function($model){
+            $students = $model->getStudents()->select(['Student.ID', 'User.Name', 'User.Email'])->asArray()->all();
+            foreach ($students as $key => $subject) {
+                $students[$key]['Marks'] = Mark::find()->select(['Mark.ID', 'Task.ID AS Task_ID', 'Value', 'Approved'])->rightJoin('Task', 'Mark.Task_ID = Task.ID')->all();
+            }
+            return $students;
+        };
+        unset($fields['Name']);
+        unset($fields['ID']);
+//        $fields['passengers'] = function($model) {
+//            $passengers = [];
+//            foreach ($model->myPassengers as $passenger) {
+//                $passengers[] = $passenger;
+//            }
+//
+//            return $passengers;
+//        };
+//        $fields['flight_data'] = function($model) {
+//            return $model->flight;
+//        };
+
+        return $fields;
     }
 }
