@@ -146,7 +146,6 @@ class CourseClass extends \app\models\base\CourseClass
             $subjects = [];
             foreach ($model->getSubjects()->all() as $key => $subject) {
                 $subjects[$key] = $subject->toArray();
-//                $subjects[$key]['Tasks'] = $subject->getTasks()->select(['ID','Name','MarkWeightAverage','TotalMark'])->andWhere(['Class_ID'=>$model->ID])->asArray()->all();
                 $tasks = $subject->getTasks()->select(['ID','Name','MarkWeightAverage','TotalMark'])->andWhere(['Class_ID'=>$model->ID])->asArray()->all();
                 foreach ($tasks as $keyTask => $task){
                     $tasksByID[$task['ID']] = $task;
@@ -158,11 +157,17 @@ class CourseClass extends \app\models\base\CourseClass
             return $subjects;
         };
         $fields['Students'] = function($model) use (&$totalMarksAverage, &$tasksByID){
-            $students = $model->getStudents()->select(['Student.ID', 'User.Name', 'User.Email'])->asArray()->all();
+            $studentQuery = $model->getStudents()->select(['Student.ID', 'User.Name', 'User.Email']);
+            if(Yii::$app->user->identity->Role_ID === STUDENT_ROLE_ID){
+                $studentQuery->where(['in', 'Student.ID', Yii::$app->user->identity->getStudents()->select('ID')]);
+            }
+            $students = $studentQuery->asArray()->all();
+            $taskQuery = $model->getTasks()->select('ID');
             foreach ($students as $key => $subject) {
                 $students[$key]['Marks'] = Mark::find()
                                             ->select(['Mark.ID', 'Task.ID AS Task_ID', 'Value', 'Approved'])
                                             ->rightJoin('Task', 'Mark.Task_ID = Task.ID')
+                                            ->where(['in', 'Mark.Task_ID', $taskQuery])
                                             ->asArray()
                                             ->all();
                 $totalMarks = 0;
