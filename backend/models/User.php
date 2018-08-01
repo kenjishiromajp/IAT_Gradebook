@@ -67,7 +67,7 @@ class User extends BaseUser implements IdentityInterface
         return static::findOne($id);
     }
     public static function findIdentityByAccessToken($token, $type = null) {
-        return static::findOne(['access_token' => $token]);
+        return static::findOne(['AccessToken' => $token]);
     }
 
     public function fields() {

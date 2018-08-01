@@ -60,6 +60,13 @@ $config = [
                 'OPTIONS login' => 'user/options',
                 [
                     'class' => 'yii\rest\UrlRule',
+                    'controller' => 'grade',
+                    'extraPatterns' => [
+                        'OPTIONS grades' => 'options',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'mark',
                     'extraPatterns' => [
                         'OPTIONS marks' => 'options',
