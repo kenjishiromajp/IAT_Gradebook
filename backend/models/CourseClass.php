@@ -2,7 +2,9 @@
 
 namespace app\models;
 
+use app\utils\Utils;
 use Yii;
+use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
 
 /**
@@ -20,6 +22,7 @@ use yii\helpers\VarDumper;
  * @property TeacherClass[] $teacherClasses
  * @property Teacher[] $teachers
  */
+
 class CourseClass extends \app\models\base\CourseClass
 {
     /**
@@ -137,41 +140,46 @@ class CourseClass extends \app\models\base\CourseClass
 
     public function fields() {
         $fields = parent::fields();
-        $fields['Class'] = function($model){
-            return [
-                'Name' =>  $model->Name,
-                'ID' =>  $model->ID,
-            ];
-        };
-        $fields['Subjects'] = function($model){
+        $totalMarksAverage = 0;
+        $tasksByID = [];
+        $fields['Subjects'] = function($model) use (&$totalMarksAverage, &$tasksByID) {
             $subjects = [];
             foreach ($model->getSubjects()->all() as $key => $subject) {
                 $subjects[$key] = $subject->toArray();
-                $subjects[$key]['Tasks'] = $subject->getTasks()->select(['ID','Name','MarkWeightAverage','TotalMark'])->andWhere(['Class_ID'=>$model->ID])->all();
+//                $subjects[$key]['Tasks'] = $subject->getTasks()->select(['ID','Name','MarkWeightAverage','TotalMark'])->andWhere(['Class_ID'=>$model->ID])->asArray()->all();
+                $tasks = $subject->getTasks()->select(['ID','Name','MarkWeightAverage','TotalMark'])->andWhere(['Class_ID'=>$model->ID])->asArray()->all();
+                foreach ($tasks as $keyTask => $task){
+                    $tasksByID[$task['ID']] = $task;
+                    $subjects[$key]['Tasks'][$keyTask] = Utils::camelizeIndexes($task);
+                    $totalMarksAverage += $task['MarkWeightAverage'];
+                }
+                $subjects[$key] = Utils::camelizeIndexes($subjects[$key]);
             }
             return $subjects;
         };
-        $fields['Students'] = function($model){
+        $fields['Students'] = function($model) use (&$totalMarksAverage, &$tasksByID){
             $students = $model->getStudents()->select(['Student.ID', 'User.Name', 'User.Email'])->asArray()->all();
             foreach ($students as $key => $subject) {
-                $students[$key]['Marks'] = Mark::find()->select(['Mark.ID', 'Task.ID AS Task_ID', 'Value', 'Approved'])->rightJoin('Task', 'Mark.Task_ID = Task.ID')->all();
+                $students[$key]['Marks'] = Mark::find()
+                                            ->select(['Mark.ID', 'Task.ID AS Task_ID', 'Value', 'Approved'])
+                                            ->rightJoin('Task', 'Mark.Task_ID = Task.ID')
+                                            ->asArray()
+                                            ->all();
+                $totalMarks = 0;
+                foreach($students[$key]['Marks'] as $markKey => $mark){
+                    $taskID = $mark['Task_ID'];
+                    $totalMark = $tasksByID[$taskID]['TotalMark'];
+                    $markWeightAverage = $tasksByID[$taskID]['MarkWeightAverage'];
+
+                    $students[$key]['Marks'][$markKey]['CorrectionPercentage'] = $mark['Value'] / $totalMark;
+                    $totalMarks += $markWeightAverage * $students[$key]['Marks'][$markKey]['CorrectionPercentage'];
+                    $students[$key]['Marks'][$markKey] = Utils::camelizeIndexes($students[$key]['Marks'][$markKey]);
+                }
+                $students[$key]['TotalMarksCorrectionPercentage'] = $totalMarks/$totalMarksAverage;
+                $students[$key] = Utils::camelizeIndexes($students[$key]);
             }
             return $students;
         };
-        unset($fields['Name']);
-        unset($fields['ID']);
-//        $fields['passengers'] = function($model) {
-//            $passengers = [];
-//            foreach ($model->myPassengers as $passenger) {
-//                $passengers[] = $passenger;
-//            }
-//
-//            return $passengers;
-//        };
-//        $fields['flight_data'] = function($model) {
-//            return $model->flight;
-//        };
-
-        return $fields;
+        return Utils::camelizeIndexes($fields,true);
     }
 }
