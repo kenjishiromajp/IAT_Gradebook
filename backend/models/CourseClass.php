@@ -146,7 +146,12 @@ class CourseClass extends \app\models\base\CourseClass
             $subjects = [];
             foreach ($model->getSubjects()->all() as $key => $subject) {
                 $subjects[$key] = $subject->toArray();
-                $tasks = $subject->getTasks()->select(['ID','Name','MarkWeightAverage','TotalMark'])->andWhere(['Class_ID'=>$model->ID])->asArray()->all();
+                $taskQuery = $subject->getTasks()->select(['ID','Name','MarkWeightAverage','TotalMark'])->andWhere(['Class_ID'=>$model->ID]);
+                if(Yii::$app->user->identity->Role_ID === TEACHER_ROLE_ID){
+                    $subjectQuery = $model->getTeacherClasses()->where()->select('Subject_ID');
+                    $taskQuery->where(['in', 'Task.Subject_ID', $subjectQuery]);
+                }
+                $tasks = $taskQuery->asArray()->all();
                 foreach ($tasks as $keyTask => $task){
                     $tasksByID[$task['ID']] = $task;
                     $subjects[$key]['Tasks'][$keyTask] = Utils::camelizeIndexes($task);
@@ -167,7 +172,7 @@ class CourseClass extends \app\models\base\CourseClass
                 $students[$key]['Marks'] = Mark::find()
                                             ->select(['Mark.ID', 'Task.ID AS Task_ID', 'Value', 'Approved'])
                                             ->rightJoin('Task', 'Mark.Task_ID = Task.ID')
-                                            ->where(['in', 'Mark.Task_ID', $taskQuery])
+                                            ->where(['in', 'Task.ID', $taskQuery])
                                             ->asArray()
                                             ->all();
                 $totalMarks = 0;

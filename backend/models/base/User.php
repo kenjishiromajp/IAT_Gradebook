@@ -73,9 +73,9 @@ abstract class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTeachers()
+    public function getTeacher()
     {
-        return $this->hasMany(\app\models\Teacher::className(), ['User_ID' => 'ID']);
+        return $this->hasOne(\app\models\Teacher::className(), ['User.ID' => 'Teacher.ID']);
     }
 
     /**
