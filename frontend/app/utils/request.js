@@ -53,7 +53,7 @@ const request = (
   { contentType = CONTENT_TYPE_APPLICATION_JSON, ...customOptions }
 ) => {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  let userToken = {};
+  let userToken = '';
   if (currentUser) {
     userToken = currentUser.token ? currentUser.token : null;
   }

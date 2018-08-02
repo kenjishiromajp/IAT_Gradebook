@@ -35,7 +35,7 @@ class LoginPage extends Component {
 
   renderHead = () => (
     <Helmet>
-      <title>Login - CUBi Energia</title>
+      <title>Login - IAT</title>
     </Helmet>
   );
 
@@ -58,7 +58,7 @@ class LoginPage extends Component {
     const { user, loading, error } = this.props;
 
     if (isValidUser(user)) {
-      return <Redirect to="/dashboard" />;
+      return <Redirect to="/" />;
     }
 
     return (

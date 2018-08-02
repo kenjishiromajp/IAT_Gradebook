@@ -28,21 +28,20 @@ class ProfileUserDropdownContainer extends Component {
     <Menu>
       <MenuItem key="0">
         <Link to="#" onClick={() => this.showEditMyProfileModal()}>
-          Editar Perfil
+          Edit Profile
         </Link>
       </MenuItem>
       <MenuDivider />
 
       <MenuItem key="2">
         <Link to="" onClick={() => this.props.logoutUser()}>
-          Sair
+          Logout
         </Link>
       </MenuItem>
     </Menu>
   );
   render() {
     const { currentUser } = this.props;
-    const { visible } = this.state;
     return (
       <div className="profile-user">
         <Row type="flex" justify="end" gutter={16}>

@@ -8,12 +8,12 @@ import {
   setCurrentUserSuccess,
 } from './actions';
 import { API_URL } from '../../utils/constants';
-import { EDIT_MY_PROFILE_SUCCESS } from '../UserFormContainer/constants';
+// import { EDIT_MY_PROFILE_SUCCESS } from '../UserFormContainer/constants';
 
 export default function* loginUser() {
   yield all([
     takeLatest(LOGIN_USER, getAllLoginUser),
-    takeLatest(EDIT_MY_PROFILE_SUCCESS, setCurrentUser),
+    // takeLatest(EDIT_MY_PROFILE_SUCCESS, setCurrentUser),
   ]);
 }
 
@@ -27,7 +27,7 @@ export function* getAllLoginUser({ resolve, reject, ...action }) {
       email,
       password,
     });
-    const currentUser = user.data;
+    const currentUser = user;
     yield setCurrentUserLocalStorage(currentUser);
     yield put(loginUserLoaded(currentUser));
   } catch (error) {

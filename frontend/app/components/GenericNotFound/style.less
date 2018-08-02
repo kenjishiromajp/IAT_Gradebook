@@ -1,0 +1,48 @@
+@import "../../ant-theme-vars";
+
+.not-found-page {
+  background-color: #282828;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+
+  h1 {
+    font-size: 14rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #7fc3d1, #5a82c1, #4d3f8c);
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: 2px;
+    transition: all 0.2s;
+  }
+
+  h3 {
+    font-size: 5rem;
+    font-weight: 500;
+    position: absolute;
+    top: 56%;
+    color: whitesmoke;
+  }
+}
+
+
+@media only screen and (max-width: 500px) {
+
+    .not-found-page {
+        h1 {
+
+            font-size: 9em;
+        }
+        h3 {
+
+            font-size: 1.2em;
+
+        }
+    }
+
+ }

@@ -77,6 +77,5 @@ MySidebar.propTypes = {
   currentPath: PropTypes.string.isRequired,
   opened: PropTypes.bool.isRequired,
   userRole: PropTypes.string.isRequired,
-  company: PropTypes.object.isRequired,
 };
 export default MySidebar;

@@ -1,0 +1,126 @@
+@import "../../ant-theme-vars";
+
+._align {
+  &-center {
+    text-align: center;
+  }
+  &-left {
+    text-align: left;
+  }
+}
+
+._bold {
+  font-weight: bold;
+}
+
+._uppercase {
+  text-transform: uppercase;
+}
+
+._camelcase {
+  text-transform: capitalize;
+}
+
+._light-font-weight {
+  font-weight: 100;
+}
+
+._extra-light-font-weight {
+  font-weight: 50;
+}
+
+// Mixin to create pseudo element (underline) below the title
+.title-before-underline() {
+  content: "";
+  position: absolute;
+  left: 1px;
+  bottom: 0;
+  height: 70%;
+  width: 30px; /* or 100px */
+}
+
+._page-title {
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  font-weight: 300;
+  padding-bottom: 5px;
+  position: relative;
+
+  &::before {
+    .title-before-underline();
+  }
+  small {
+    font-weight: 200;
+
+    &::before {
+      content: ">";
+      padding: 0 10px;
+    }
+  }
+}
+
+._section-title {
+  position: relative;
+  &::before {
+    .title-before-underline();
+  }
+}
+
+._margin {
+  &-top {
+    margin-top: 20px;
+    &-medium {
+      margin-top: 40px;
+    }
+    &-big {
+      margin-top: 60px !important;
+    }
+  }
+  &-right {
+    margin-right: 20px;
+  }
+  &-bottom {
+    margin-bottom: 20px;
+  }
+  &-left {
+    margin-left: 20px;
+  }
+}
+
+._padding {
+  padding: 20px;
+
+  &-top {
+    padding-top: 20px;
+    &-medium {
+      padding-top: 40px;
+    }
+    &-big {
+      padding-top: 60px !important;
+    }
+  }
+  &-right {
+    padding-right: 20px;
+  }
+  &-bottom {
+    padding-bottom: 20px;
+  }
+  &-left {
+    padding-left: 20px;
+  }
+}
+
+
+._border-radius {
+  &-none {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+}
+
+._flex {
+  &-nowrap {
+    flex-wrap: nowrap;
+  }
+}

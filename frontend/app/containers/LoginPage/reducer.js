@@ -6,7 +6,6 @@ import {
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
 } from './constants';
-import { LOAD_DASHBOARD } from '../DashboardContainer/constants';
 
 const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
 
@@ -19,11 +18,6 @@ const initialState = fromJS({
 function loginReducer(state = initialState, action) {
   const { type } = action;
   switch (type) {
-    case LOAD_DASHBOARD:
-      return state.setIn(
-        ['currentUser', 'dashboardHistory', 'branchId'],
-        action.params.branchId
-      );
     case LOGIN_USER:
       return state
         .set('loading', true)

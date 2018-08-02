@@ -1,32 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { compose } from 'redux';
 
+import GradeBookPage from '../GradeBookPage/loadable';
+import LandingPage from '../LandingPage/loadable';
+import LoginPage from '../LoginPage/loadable';
 import './fileLoads';
 import './style.less';
-
 import injectSaga from '../../utils/injectSaga';
+import loginSaga from '../LoginPage/saga';
+import loginReducer from '../LoginPage/reducer';
+import injectReducer from '../../utils/injectReducer';
+import GenericNotFound from '../../components/GenericNotFound';
+import PrivateDefaultLayout from '../../layouts/PrivateDefaultLayout';
 
-import PostPage from '../PostPage/loadable';
-import ContactPage from '../ContactPage/loadable';
-import LoginPage from '../LoginPage/loadable';
+const App = () => (
+  <Switch>
+    <PrivateDefaultLayout exact path="/" component={LandingPage} />
+    <PrivateDefaultLayout exact path="/gradebook" component={GradeBookPage} />
+    <Route exact path="/login" component={LoginPage} />
+    <Route component={GenericNotFound} />
+  </Switch>
+);
 
-import DefaultLayout from '../../layouts/DefaultLayout/index';
-import PrivateDefaultLayout from '../../layouts/PrivateDefaultLayout/index';
+const withLoginSaga = injectSaga({
+  key: 'login',
+  saga: loginSaga,
+});
+const withLoginReducer = injectReducer({
+  key: 'login',
+  reducer: loginReducer,
+});
 
-import saga from './saga';
-
-class App extends Component {
-  render() {
-    return (
-      <Switch>
-        <Route exact path="/login" component={LoginPage} />
-        <DefaultLayout exact path="/contact" component={ContactPage} />
-        <PrivateDefaultLayout exact path="/" component={PostPage} />
-      </Switch>
-    );
-  }
-}
-
-const withSaga = injectSaga({ key: 'global', saga });
-export default compose(withSaga)(App);
+export default compose(withLoginSaga, withLoginReducer)(App);

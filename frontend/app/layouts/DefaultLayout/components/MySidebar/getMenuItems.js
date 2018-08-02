@@ -5,68 +5,15 @@ const ADMIN_ROLE = 'ADMIN_ROLE';
 
 const getMenuItems = () => [
   {
-    to: '/dashboard',
-    title: 'Dashboard',
+    to: '/',
+    title: 'Home',
     icon: 'dashboard',
   },
   {
-    to: '/empresas',
-    title: 'Empresas',
+    to: '/gradebook',
+    title: 'GradeBook',
     icon: 'dashboard',
-    notAllowedRoles: [USER_ROLE, ADMIN_ROLE],
-  },
-  {
-    to: '/consumo',
-    title: 'Análises',
-    icon: 'area-chart',
-    subMenu: [
-      {
-        to: '/consumo',
-        title: 'Consumo',
-        icon: 'bar-chart',
-      },
-      {
-        to: '/demanda',
-        title: 'Demanda',
-        icon: 'area-chart',
-      },
-      {
-        to: '/rateio',
-        title: 'Rateio',
-        icon: 'pie-chart',
-      },
-      {
-        to: '/horario-produtivo',
-        title: 'Horário Produtivo',
-        icon: 'pie-chart',
-      },
-      {
-        to: '/horario-ponta',
-        title: 'Horário de Ponta',
-        icon: 'pie-chart',
-      },
-    ],
-  },
-  {
-    to: `/${METERS_URL}`,
-    title: 'Medidores',
-    icon: 'wifi',
-  },
-  {
-    to: `/${USERS_URL}`,
-    title: 'Usuários',
-    icon: 'user',
-    notAllowedRoles: ['user'],
-  },
-  {
-    to: '/exportacao',
-    title: 'Exportação',
-    icon: 'cloud-download',
-  },
-  {
-    to: `/${ALERTS_URL}`,
-    title: 'Alertas',
-    icon: 'warning',
+    // notAllowedRoles: [USER_ROLE, ADMIN_ROLE],
   },
 ];
 export default getMenuItems;
