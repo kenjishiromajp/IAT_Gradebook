@@ -38,7 +38,11 @@ class GradeController extends AuthCorActiveController
         if (!empty($filter)) {
             $query->andWhere($filter);
         }
-
+        if(Yii::$app->user->identity->Role_ID === STUDENT_ROLE_ID){
+            $query
+                ->leftJoin('Student_Class as sc', 'Class.ID = sc.Class_ID')
+                ->where(['in', 'sc.Student_ID', Yii::$app->user->identity->getStudents()->select('ID')]);
+        }
         return new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
