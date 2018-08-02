@@ -1,15 +1,7 @@
-import React from 'react';
-import IconUnit from '../../../../components/Icons/IconUnit';
-import IconKpi from '../../../../components/Icons/IconKpi';
-import {
-  ADMIN_ROLE,
-  ALERTS_URL,
-  BRANCHES_URL,
-  METERS_URL,
-  PERFORMANCE_INDEX_URL,
-  USER_ROLE,
-  USERS_URL,
-} from '../../../../utils/constants';
+import { ALERTS_URL, METERS_URL, USERS_URL } from '../../../../utils/constants';
+
+const USER_ROLE = 'USER_ROLE';
+const ADMIN_ROLE = 'ADMIN_ROLE';
 
 const getMenuItems = () => [
   {
@@ -61,11 +53,6 @@ const getMenuItems = () => [
     icon: 'wifi',
   },
   {
-    to: `/${BRANCHES_URL}`,
-    title: 'Unidades',
-    icon: <IconUnit />,
-  },
-  {
     to: `/${USERS_URL}`,
     title: 'Usuários',
     icon: 'user',
@@ -80,11 +67,6 @@ const getMenuItems = () => [
     to: `/${ALERTS_URL}`,
     title: 'Alertas',
     icon: 'warning',
-  },
-  {
-    to: `/${PERFORMANCE_INDEX_URL}`,
-    title: 'Índices de performance',
-    icon: <IconKpi />,
   },
 ];
 export default getMenuItems;

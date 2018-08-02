@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon, Row, notification, Button, Table, Modal } from 'antd';
+import { Card, Icon, Row, notification, Button, Modal } from 'antd';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';

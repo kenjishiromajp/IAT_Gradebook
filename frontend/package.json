@@ -8,7 +8,8 @@
     "precommit": "lint-staged",
     "prod": "cross-env NODE_ENV=production node server",
     "jsonserver": "json-server --watch test-db.json --port 3004",
-    "build": "cross-env NODE_ENV=production webpack --config configs/webpack.prod.config.js --color -p --progress --hide-modules",
+    "build":
+      "cross-env NODE_ENV=production webpack --config configs/webpack.prod.config.js --color -p --progress --hide-modules",
     "format": "prettier-eslint --write \"app/**/*.js\" \"server/**/*.js\"",
     "generate": "plop --plopfile generators/index.js"
   },
@@ -31,9 +32,7 @@
     ],
     "env": {
       "production": {
-        "only": [
-          "app"
-        ],
+        "only": ["app"],
         "plugins": [
           "transform-react-remove-prop-types",
           "transform-react-constant-elements",
@@ -41,10 +40,7 @@
         ]
       },
       "test": {
-        "plugins": [
-          "transform-es2015-modules-commonjs",
-          "dynamic-import-node"
-        ]
+        "plugins": ["transform-es2015-modules-commonjs", "dynamic-import-node"]
       }
     }
   },
@@ -57,11 +53,7 @@
       "jest": true,
       "es6": true
     },
-    "plugins": [
-      "redux-saga",
-      "react",
-      "jsx-a11y"
-    ],
+    "plugins": ["redux-saga", "react", "jsx-a11y"],
     "parserOptions": {
       "ecmaVersion": 6,
       "sourceType": "module",
@@ -70,19 +62,10 @@
       }
     },
     "rules": {
-      "arrow-parens": [
-        "error",
-        "always"
-      ],
-      "arrow-body-style": [
-        2,
-        "as-needed"
-      ],
+      "arrow-parens": ["error", "always"],
+      "arrow-body-style": [2, "as-needed"],
       "class-methods-use-this": 0,
-      "comma-dangle": [
-        2,
-        "always-multiline"
-      ],
+      "comma-dangle": [2, "always-multiline"],
       "import/imports-first": 0,
       "import/newline-after-import": 0,
       "import/no-dynamic-require": 0,
@@ -112,10 +95,7 @@
       "no-use-before-define": 0,
       "prefer-template": 2,
       "react/forbid-prop-types": 0,
-      "react/jsx-first-prop-new-line": [
-        2,
-        "multiline"
-      ],
+      "react/jsx-first-prop-new-line": [2, "multiline"],
       "react/jsx-filename-extension": 0,
       "react/jsx-no-target-blank": 0,
       "react/require-default-props": 0,
@@ -150,15 +130,15 @@
         "lines": 98
       }
     },
-    "moduleDirectories": [
-      "node_modules",
-      "app"
-    ],
+    "moduleDirectories": ["node_modules", "app"],
     "moduleNameMapper": {
-      ".*\\.(css|less|styl|scss|sass)$": "<rootDir>/internals/mocks/cssModule.js",
-      ".*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/image.js"
+      ".*\\.(css|less|styl|scss|sass)$":
+        "<rootDir>/internals/mocks/cssModule.js",
+      ".*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+        "<rootDir>/internals/mocks/image.js"
     },
-    "setupTestFrameworkScriptFile": "<rootDir>/internals/testing/test-bundler.js",
+    "setupTestFrameworkScriptFile":
+      "<rootDir>/internals/testing/test-bundler.js",
     "testRegex": "tests/.*\\.test\\.js$"
   },
   "dependencies": {
@@ -171,7 +151,7 @@
     "express": "^4.16.2",
     "history": "^4.7.2",
     "hoist-non-react-statics": "^2.5.0",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "^3.2.0",
     "immutable": "^3.8.2",
     "ip": "^1.1.5",
     "less": "^2.7.3",
@@ -193,8 +173,8 @@
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
     "styled-components": "^2.4.0",
-    "webpack": "^3.10.0",
-    "whatwg-fetch": "^2.0.3"
+    "webpack": "^4.6.0",
+    "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

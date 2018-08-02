@@ -13,7 +13,6 @@ import { makeSelectError, makeSelectSidebarOpened } from './selector';
 import { makeSelectLocation } from '../../containers/App/selectors';
 import { makeSelectCurrentUser } from '../../containers/LoginPage/selectors';
 import ProfileUser from '../../containers/ProfileUserDropdownContainer/index';
-import AlertNotificationContainer from '../../containers/AlertNotificationContainer';
 import openNotificationWithIcon from '../../utils/antd-notification';
 import routeReducer from './reducer';
 import injectReducer from '../../utils/injectReducer';
@@ -74,9 +73,6 @@ class DefaultLayout extends React.Component {
                     </Col>
                     <Col>
                       <Row type="flex" gutter={15}>
-                        <Col>
-                          <AlertNotificationContainer />
-                        </Col>
                         <Col>
                           <ProfileUser />
                         </Col>

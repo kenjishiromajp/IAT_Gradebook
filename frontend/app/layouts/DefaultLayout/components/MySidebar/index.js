@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Col, Layout, Menu, Row } from 'antd';
+import { Layout, Menu } from 'antd';
 import PropTypes from 'prop-types';
 import MyMenuItem from '../MyMenuItem/index';
 import getMenuItems from './getMenuItems';
 import MySubMenuItem from '../MySubMenuItem/index';
 import './style.less';
-import CompanyLogo from '../../../../components/CompanyLogo/index';
-import BrandCUBi from '../../../../components/BrandCUBi';
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 const MenuItem = Menu.Item;
@@ -56,9 +54,7 @@ class MySidebar extends Component {
   };
 
   render() {
-    const {
-      opened, currentPath, company, userRole,
-    } = this.props;
+    const { opened, currentPath } = this.props;
     return (
       <Sider
         width={220}
@@ -68,13 +64,9 @@ class MySidebar extends Component {
         className="my-sider"
       >
         <div>
-          <CompanyLogo company={company} role={userRole} />
           <Menu theme="dark" mode="inline" selectedKeys={[currentPath]}>
             {this.renderMenuItems()}
           </Menu>
-        </div>
-        <div className="brand">
-          <BrandCUBi type="light" style={{ opacity: 0.2 }} />
         </div>
       </Sider>
     );

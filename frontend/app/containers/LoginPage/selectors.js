@@ -1,14 +1,13 @@
 import { createSelector } from 'reselect';
-import transformObjectToArray from '../../utils/transformObjectToArray';
 
-export const selectLoginPages = (state) => state.get('loginPages');
+export const selectLogin = (state) => state.get('login');
 
-export const makeSelectLoginPages = () =>
-  createSelector(selectLoginPages, (loginPageState) => {
-    const loginPages = loginPageState.get('loginPages');
-    return loginPages === null ? null : transformObjectToArray(loginPages);
-  });
+export const makeSelectCurrentUser = () =>
+  createSelector(selectLogin, (loginState) =>
+    loginState.get('currentUser').toJS());
 
-export const makeSelectLoginPagesLoading = () =>
-  createSelector(selectLoginPages, (loginPageState) =>
-    loginPageState.get('loading'));
+export const makeSelectLoading = () =>
+  createSelector(selectLogin, (loginState) => loginState.get('loading'));
+
+export const makeSelectError = () =>
+  createSelector(selectLogin, (loginState) => loginState.get('error'));

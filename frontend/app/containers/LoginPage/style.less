@@ -1,0 +1,55 @@
+@import "../../ant-theme-vars";
+.login-page {
+  //background: linear-gradient(90deg, #7FC3D1, #5A82C1, #4D3F8C);
+  background-color: #252525;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  a {
+    color: white;
+  }
+
+  .login-form {
+    padding: 20px;
+    max-width: 500px;
+
+    .input-icon {
+      color: rgba(0,0,0,.25);
+    }
+
+    .login-form-button {
+      width: 100%;
+    }
+
+    .login-logo {
+      margin-bottom: 40px;
+      padding: 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .ant-input-affix-wrapper {
+      height: 50px;
+    }
+
+    .ant-btn {
+      border-radius: 50px;
+      height: 50px;
+      font-size: 17px;
+      //background-color: white;
+      //color: @grey-cubi;
+    }
+
+    .has-error .ant-form-explain,
+    .has-error .ant-form-split {
+      color: white;
+    }
+  }
+
+  animation: antFadeIn 1s linear;
+}
+
+

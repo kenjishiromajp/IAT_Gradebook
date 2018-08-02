@@ -8,74 +8,104 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Form, Icon, Input } from 'antd';
 import { createStructuredSelector } from 'reselect';
 import { Helmet } from 'react-helmet';
-
-import { login } from '../App/actions';
-
-import './styles.less';
+import { Redirect } from 'react-router-dom';
+import { Button, Form, Icon, Input, Alert } from 'antd';
+import './style.less';
+import { loginUser } from './actions';
+import LogoCubi from './components/LogoCubi';
+import { makeSelectError, makeSelectLoading } from './selectors';
+import { isValidUser } from '../../utils/authentication';
+import { withLoginUser } from '../../utils/withLoginUser';
 
 const FormItem = Form.Item;
 
 class LoginPage extends Component {
-  state = {};
   handleSubmit = (ev) => {
     ev.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    const { form, loginUser } = this.props;
+    form.validateFields((err, values) => {
       if (!err) {
-        const { username, password } = values;
-        this.props.login(username, password);
+        const { email, password } = values;
+        loginUser(email, password);
       }
     });
   };
-  renderHead() {
-    return (
-      <Helmet>
-        <title>LoginPage</title>
-      </Helmet>
-    );
-  }
+
+  renderHead = () => (
+    <Helmet>
+      <title>Login - CUBi Energia</title>
+    </Helmet>
+  );
+
+  renderLoginError = (error) => {
+    if (error && error.messageTitle && error.message) {
+      return (
+        <Alert
+          message={error.messageTitle}
+          description={error.message}
+          type="error"
+          style={{ width: '320px', marginBottom: '25px' }}
+        />
+      );
+    }
+    return null;
+  };
   render() {
     const { renderHead } = this;
     const { getFieldDecorator } = this.props.form;
+    const { user, loading, error } = this.props;
+
+    if (isValidUser(user)) {
+      return <Redirect to="/dashboard" />;
+    }
+
     return (
       <div className="login-page">
         {renderHead()}
-        <h1>LoginPage</h1>
         <Form onSubmit={this.handleSubmit} className="login-form">
+          <div className="login-logo">
+            <LogoCubi />
+          </div>
+          {this.renderLoginError(error)}
           <FormItem>
-            {getFieldDecorator('username', {
+            {getFieldDecorator('email', {
               rules: [
-                { required: true, message: 'Please input your username!' },
+                { type: 'email', message: 'E-mail inválido!' },
+                {
+                  required: true,
+                  message: 'Por favor, preencher o campo e-mail!',
+                },
               ],
             })(<Input
-              prefix={
-                <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-              }
-              placeholder="Username"
+              autoComplete="off"
+              prefix={<Icon type="user" className="input-icon" />}
+              placeholder="E-mail"
             />)}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
               rules: [
-                { required: true, message: 'Please input your Password!' },
+                {
+                  required: true,
+                  message: 'Por favor, preencher o campo senha!',
+                },
               ],
             })(<Input
-              prefix={
-                <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
-              }
+              prefix={<Icon type="lock" className="input-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder="Senha"
             />)}
           </FormItem>
-          <FormItem>
+          <FormItem className="_align-center">
             <Button
               type="primary"
               htmlType="submit"
-              className="login-form-button"
+              className="login-form-button _uppercase"
+              loading={loading}
             >
-              Log in
+              entrar
             </Button>
           </FormItem>
         </Form>
@@ -85,15 +115,21 @@ class LoginPage extends Component {
 }
 
 LoginPage.propTypes = {
+  user: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.object,
   form: PropTypes.object.isRequired,
-  login: PropTypes.func.isRequired,
+  loginUser: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({});
-
-const mapDispatchToProps = (dispatch) => ({
-  login: (username, password) => dispatch(login(username, password)),
+const mapStateToProps = createStructuredSelector({
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
 });
 
+const mapDispatchToProps = {
+  loginUser,
+};
+
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
-export default compose(Form.create(), withConnect)(LoginPage);
+export default compose(Form.create(), withConnect, withLoginUser)(LoginPage);
