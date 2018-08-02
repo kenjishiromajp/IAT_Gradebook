@@ -2,6 +2,7 @@
 
 namespace app\models\base;
 
+use app\models\CourseClassQuery;
 use Yii;
 
 /**

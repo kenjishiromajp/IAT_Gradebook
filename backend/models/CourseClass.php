@@ -28,7 +28,6 @@ class CourseClass extends \app\models\base\CourseClass
     /**
      * {@inheritdoc}
      */
-    public $batata = '';
 
     public static function tableName()
     {
@@ -108,9 +107,20 @@ class CourseClass extends \app\models\base\CourseClass
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getMarks()
+    {
+        return $this
+            ->hasMany(Mark::className(), ['Student_Class_ID' => 'ID'])
+            ->viaTable('Student_Class',['Class_ID'=>'ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getTasks()
     {
-        return $this->hasMany(Task::className(), ['Class_ID' => 'ID']);
+        return $this->hasMany(Task::className(), ['TeacherClass_ID' => 'ID'])
+                        ->viaTable('Teacher_Class', ['Class_ID' => 'ID']);
     }
 
     /**
@@ -146,12 +156,17 @@ class CourseClass extends \app\models\base\CourseClass
             $subjects = [];
             foreach ($model->getSubjects()->all() as $key => $subject) {
                 $subjects[$key] = $subject->toArray();
-                $taskQuery = $subject->getTasks()->select(['ID','Name','MarkWeightAverage','TotalMark'])->andWhere(['Class_ID'=>$model->ID]);
+                // Tarefas desta Turma, e desta matéria
+                // Subject_ID = 2 && Class_ID = 3,
+                $taskQuery = $model->getTasks()
+                                    ->innerJoin('Teacher_Class as tc', 'Task.TeacherClass_ID = tc.ID')
+                                    ->where(['tc.Subject_ID' => $subject->ID])
+                                    ->select(['Task.ID','Task.Name','Task.MarkWeightAverage','Task.TotalMark']);
                 if(Yii::$app->user->identity->Role_ID === TEACHER_ROLE_ID){
-                    $subjectQuery = $model->getTeacherClasses()->where()->select('Subject_ID');
-                    $taskQuery->where(['in', 'Task.Subject_ID', $subjectQuery]);
+                    $taskQuery->where(['tc.Teacher_ID'=> Yii::$app->user->identity->teacher->ID, 'tc.Subject_ID'=>$subject->ID]);
                 }
-                $tasks = $taskQuery->asArray()->all();
+                $subjects[$key]['Tasks'] = [];
+                $tasks = $taskQuery->asArray()->all();;
                 foreach ($tasks as $keyTask => $task){
                     $tasksByID[$task['ID']] = $task;
                     $subjects[$key]['Tasks'][$keyTask] = Utils::camelizeIndexes($task);
@@ -167,14 +182,19 @@ class CourseClass extends \app\models\base\CourseClass
                 $studentQuery->where(['in', 'Student.ID', Yii::$app->user->identity->getStudents()->select('ID')]);
             }
             $students = $studentQuery->asArray()->all();
-            $taskQuery = $model->getTasks()->select('ID');
+            $markQuery = Mark::find()
+                ->rightJoin('Task as t', 'Mark.Task_ID = t.ID')
+                ->innerJoin('Teacher_Class as tc', 't.TeacherClass_ID= tc.ID')
+                ->select(['Mark.ID', 't.ID as Task_ID', 'Value', 'Approved'])
+                ->where([
+                    'tc.Class_ID' => $model->ID,
+                ]);
+            if(Yii::$app->user->identity->Role_ID === TEACHER_ROLE_ID){
+                $markQuery
+                    ->andWhere(['tc.Teacher_ID' => Yii::$app->user->identity->teacher->ID]);
+            }
             foreach ($students as $key => $subject) {
-                $students[$key]['Marks'] = Mark::find()
-                                            ->select(['Mark.ID', 'Task.ID AS Task_ID', 'Value', 'Approved'])
-                                            ->rightJoin('Task', 'Mark.Task_ID = Task.ID')
-                                            ->where(['in', 'Task.ID', $taskQuery])
-                                            ->asArray()
-                                            ->all();
+                $students[$key]['Marks'] = $markQuery->asArray()->all();
                 $totalMarks = 0;
                 foreach($students[$key]['Marks'] as $markKey => $mark){
                     $taskID = $mark['Task_ID'];

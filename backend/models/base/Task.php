@@ -13,13 +13,11 @@ use Yii;
  * @property string $Name
  * @property string $MarkWeightAverage
  * @property string $TotalMark
- * @property integer $Class_ID
- * @property integer $Subject_ID
+ * @property integer $TeacherClass_ID
  * @property integer $TaskCategory_ID
  *
  * @property \app\models\Mark[] $marks
- * @property \app\models\Class $class
- * @property \app\models\Subject $subject
+ * @property \app\models\TeacherClass $teacherClass
  * @property \app\models\TaskCategory $taskCategory
  * @property string $aliasModel
  */
@@ -42,12 +40,11 @@ abstract class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Name', 'MarkWeightAverage', 'TotalMark', 'Class_ID', 'Subject_ID', 'TaskCategory_ID'], 'required'],
+            [['Name', 'MarkWeightAverage', 'TotalMark', 'TeacherClass_ID', 'TaskCategory_ID'], 'required'],
             [['MarkWeightAverage', 'TotalMark'], 'number'],
-            [['Class_ID', 'Subject_ID', 'TaskCategory_ID'], 'integer'],
+            [['TeacherClass_ID', 'TaskCategory_ID'], 'integer'],
             [['Name'], 'string', 'max' => 155],
-            [['Class_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\CourseClass::className(), 'targetAttribute' => ['Class_ID' => 'ID']],
-            [['Subject_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Subject::className(), 'targetAttribute' => ['Subject_ID' => 'ID']],
+            [['TeacherClass_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TeacherClass::className(), 'targetAttribute' => ['TeacherClass_ID' => 'ID']],
             [['TaskCategory_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TaskCategory::className(), 'targetAttribute' => ['TaskCategory_ID' => 'ID']]
         ];
     }
@@ -62,8 +59,7 @@ abstract class Task extends \yii\db\ActiveRecord
             'Name' => 'Name',
             'MarkWeightAverage' => 'Mark Weight Average',
             'TotalMark' => 'Total Mark',
-            'Class_ID' => 'Class  ID',
-            'Subject_ID' => 'Subject  ID',
+            'TeacherClass_ID' => 'Teacher Class  ID',
             'TaskCategory_ID' => 'Task Category  ID',
         ];
     }
@@ -79,17 +75,9 @@ abstract class Task extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getClass()
+    public function getTeacherClass()
     {
-        return $this->hasOne(\app\models\CourseClass::className(), ['ID' => 'Class_ID']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSubject()
-    {
-        return $this->hasOne(\app\models\Subject::className(), ['ID' => 'Subject_ID']);
+        return $this->hasOne(\app\models\TeacherClass::className(), ['ID' => 'TeacherClass_ID']);
     }
 
     /**

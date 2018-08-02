@@ -14,7 +14,6 @@ use Yii;
  *
  * @property \app\models\SubjectSubjectGroup[] $subjectSubjectGroups
  * @property \app\models\SubjectGroup[] $subjectGroups
- * @property \app\models\Task[] $tasks
  * @property \app\models\TeacherClass[] $teacherClasses
  * @property \app\models\TeacherSubject[] $teacherSubjects
  * @property \app\models\Teacher[] $teachers
@@ -69,14 +68,6 @@ abstract class Subject extends \yii\db\ActiveRecord
     public function getSubjectGroups()
     {
         return $this->hasMany(\app\models\SubjectGroup::className(), ['ID' => 'SubjectGroup_ID'])->viaTable('Subject_SubjectGroup', ['Subject_ID' => 'ID']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTasks()
-    {
-        return $this->hasMany(\app\models\Task::className(), ['Subject_ID' => 'ID']);
     }
 
     /**

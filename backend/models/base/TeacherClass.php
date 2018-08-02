@@ -9,13 +9,13 @@ use Yii;
 /**
  * This is the base-model class for table "Teacher_Class".
  *
+ * @property integer $ID
  * @property integer $Teacher_ID
  * @property integer $Class_ID
  * @property integer $Subject_ID
  *
+ * @property \app\models\Task[] $tasks
  * @property \app\models\Class $class
- * @property \app\models\Teacher $teacher
- * @property \app\models\Subject $subject
  * @property string $aliasModel
  */
 abstract class TeacherClass extends \yii\db\ActiveRecord
@@ -37,12 +37,10 @@ abstract class TeacherClass extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Teacher_ID', 'Class_ID', 'Subject_ID'], 'required'],
-            [['Teacher_ID', 'Class_ID', 'Subject_ID'], 'integer'],
-            [['Teacher_ID', 'Class_ID'], 'unique', 'targetAttribute' => ['Teacher_ID', 'Class_ID']],
-            [['Class_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\CourseClass::className(), 'targetAttribute' => ['Class_ID' => 'ID']],
-            [['Teacher_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Teacher::className(), 'targetAttribute' => ['Teacher_ID' => 'ID']],
-            [['Subject_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Subject::className(), 'targetAttribute' => ['Subject_ID' => 'ID']]
+            [['ID', 'Teacher_ID', 'Class_ID', 'Subject_ID'], 'required'],
+            [['ID', 'Teacher_ID', 'Class_ID', 'Subject_ID'], 'integer'],
+            [['ID'], 'unique'],
+            [['Class_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\CourseClass::className(), 'targetAttribute' => ['Class_ID' => 'ID']]
         ];
     }
 
@@ -52,6 +50,7 @@ abstract class TeacherClass extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'ID' => 'ID',
             'Teacher_ID' => 'Teacher  ID',
             'Class_ID' => 'Class  ID',
             'Subject_ID' => 'Subject  ID',
@@ -61,25 +60,17 @@ abstract class TeacherClass extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getTasks()
+    {
+        return $this->hasMany(\app\models\Task::className(), ['TeacherClass_ID' => 'ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getClass()
     {
         return $this->hasOne(\app\models\CourseClass::className(), ['ID' => 'Class_ID']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTeacher()
-    {
-        return $this->hasOne(\app\models\Teacher::className(), ['ID' => 'Teacher_ID']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSubject()
-    {
-        return $this->hasOne(\app\models\Subject::className(), ['ID' => 'Subject_ID']);
     }
 
 

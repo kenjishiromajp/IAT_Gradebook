@@ -75,7 +75,7 @@ abstract class User extends \yii\db\ActiveRecord
      */
     public function getTeacher()
     {
-        return $this->hasOne(\app\models\Teacher::className(), ['User.ID' => 'Teacher.ID']);
+        return $this->hasOne(\app\models\Teacher::className(), ['Teacher.ID' => 'ID']);
     }
 
     /**
