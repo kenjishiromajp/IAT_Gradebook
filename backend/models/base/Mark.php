@@ -38,10 +38,10 @@ abstract class Mark extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Student_Class_ID', 'Task_ID', 'Value', 'Approved'], 'required'],
-            [['Student_Class_ID', 'Task_ID', 'Approved'], 'integer'],
+            [['Task_ID', 'Value'], 'required'],
+            [['Task_ID', 'Approved'], 'integer'],
             [['Value'], 'number'],
-            [['Student_Class_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\StudentClass::className(), 'targetAttribute' => ['Student_Class_ID' => 'ID']],
+//            [['Student_Class_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\StudentClass::className(), 'targetAttribute' => ['Student_Class_ID' => 'ID']],
             [['Task_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Task::className(), 'targetAttribute' => ['Task_ID' => 'ID']]
         ];
     }
