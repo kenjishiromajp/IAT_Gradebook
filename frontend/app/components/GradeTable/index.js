@@ -6,9 +6,10 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row } from 'antd';
+import { Button, Row } from 'antd';
 import './style.less';
 import MarkInputContainer from '../../containers/MarkInputContainer';
+import { API_URL } from '../../utils/constants';
 
 class GradeTable extends Component {
   getAllTasks = () => {
@@ -118,6 +119,13 @@ class GradeTable extends Component {
               <h5>{courseClass.endDate.format('DD/MM/YYYY')}</h5>
             </Row>
           </div>
+          <Button
+            size="small"
+            download={`gradebook_${this.props.courseClass.id}.csv`}
+            href={`${API_URL}/gradebook/${this.props.courseClass.id}/download`}
+          >
+            Download Excel
+          </Button>
         </Row>
         <table>
           <thead>
