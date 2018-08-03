@@ -23,7 +23,12 @@ class MarkController extends AuthCorActiveController
             }
             $newMarks[] = $model;
         }
+        $this->verifyIfAllMarksOfOneGradebookIsReady($marks);
         return $newMarks;
+    }
+
+    private function verifyIfAllMarksOfOneGradebookIsReady($marks){
+
     }
 
     private function findModel($id)

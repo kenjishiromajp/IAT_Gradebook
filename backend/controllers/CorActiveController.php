@@ -15,6 +15,7 @@ class CorActiveController extends \yii\rest\ActiveController
                     'Origin' => ['*'],
                     'Access-Control-Request-Headers' => ['Content-Type', 'Authorization'],
                     'Access-Control-Request-Method'    => ['POST','PUT','PATCH','DELETE','GET'],
+                    'Access-Control-Allow-Origin' => '*',
                 ],
             ]
         ]);
