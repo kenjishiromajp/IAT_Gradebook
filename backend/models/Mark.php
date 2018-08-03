@@ -70,6 +70,9 @@ class Mark extends BaseMark
             $this->Student_Class_ID = $studentClass->ID;
             $this->Approved = false;
         }
+        if(Yii::$app->user->identity->Role_ID >= TEACHER_ROLE_ID){
+            $this->Approved = false;
+        }
         return parent::beforeSave($insert);
     }
 

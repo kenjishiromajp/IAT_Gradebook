@@ -39,7 +39,8 @@ abstract class Mark extends \yii\db\ActiveRecord
     {
         return [
             [['Task_ID', 'Value'], 'required'],
-            [['Task_ID', 'Approved'], 'integer'],
+            [['Task_ID'], 'integer'],
+            [['Approved'], 'boolean'],
             [['Value'], 'number'],
 //            [['Student_Class_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\StudentClass::className(), 'targetAttribute' => ['Student_Class_ID' => 'ID']],
             [['Task_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Task::className(), 'targetAttribute' => ['Task_ID' => 'ID']]

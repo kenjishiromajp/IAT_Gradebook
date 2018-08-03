@@ -58,6 +58,7 @@ $config = [
             'rules' => [
                 'POST login' => 'user/login',
                 'OPTIONS login' => 'user/options',
+                'PUT marks' => 'mark/editmanymarks',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'grade',
@@ -69,7 +70,7 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'mark',
                     'extraPatterns' => [
-                        'OPTIONS marks' => 'options',
+                        'OPTIONS' => 'options',
                     ]
                 ],
                 [

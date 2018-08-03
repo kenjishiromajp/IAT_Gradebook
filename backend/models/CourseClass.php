@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\utils\Utils;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
 
@@ -166,10 +167,15 @@ class CourseClass extends \app\models\base\CourseClass
                     $taskQuery->where(['tc.Teacher_ID'=> Yii::$app->user->identity->teacher->ID, 'tc.Subject_ID'=>$subject->ID]);
                 }
                 $subjects[$key]['Tasks'] = [];
-                $tasks = $taskQuery->asArray()->all();;
+                $tasks = $taskQuery->asArray()->all();
                 foreach ($tasks as $keyTask => $task){
+                    $newTask = Utils::camelizeIndexes(ArrayHelper::merge($task,[
+                       'TotalMark' => (float)$task['TotalMark'],
+                       'MarkWeightAverage' => (float)$task['MarkWeightAverage'],
+                    ]));
+
                     $tasksByID[$task['ID']] = $task;
-                    $subjects[$key]['Tasks'][$keyTask] = Utils::camelizeIndexes($task);
+                    $subjects[$key]['Tasks'][$keyTask] = $newTask;
                     $totalMarksAverage += $task['MarkWeightAverage'];
                 }
                 $subjects[$key] = Utils::camelizeIndexes($subjects[$key]);
@@ -186,7 +192,7 @@ class CourseClass extends \app\models\base\CourseClass
                 $markQuery = Mark::find()
                     ->rightJoin('Task as t', 'Mark.Task_ID = t.ID')
                     ->innerJoin('Teacher_Class as tc', 't.TeacherClass_ID= tc.ID')
-                    ->select(['Mark.ID', 't.ID as Task_ID', 'Value', 'Approved'])
+                    ->select(['Mark.ID', 't.ID as Task_ID', 'Value', 'Approved', 'Description'])
                     ->where([
                         'tc.Class_ID' => $model->ID,
                     ]);
@@ -201,8 +207,10 @@ class CourseClass extends \app\models\base\CourseClass
                 $totalMarks = 0;
                 $newMarks = [];
                 foreach($marks as $markKey => $mark){
-                    $newMark = $mark;
-                    $newMark['Approved'] = $newMark['Approved'] == '1';
+                    $newMark = ArrayHelper::merge($mark,[
+                        'Approved' => (bool)$mark['Approved'] == '1',
+                        'Value' => (float)$mark['Value'],
+                    ]);
                     $taskID = $mark['Task_ID'];
                     $totalMark = $tasksByID[$taskID]['TotalMark'];
                     $markWeightAverage = $tasksByID[$taskID]['MarkWeightAverage'];

@@ -14,11 +14,12 @@ class CorActiveController extends \yii\rest\ActiveController
                 'cors'  => [
                     'Origin' => ['*'],
                     'Access-Control-Request-Headers' => ['Content-Type', 'Authorization'],
-                    'Access-Control-Request-Method'    => ['POST','PUT','PATCH','DELETE', 'GET'],
+                    'Access-Control-Request-Method'    => ['POST','PUT','PATCH','DELETE','GET'],
                 ],
             ]
         ]);
     }
+
     public function beforeAction($action) {
         $beforeAction = parent::beforeAction($action);
 
