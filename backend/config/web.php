@@ -59,6 +59,7 @@ $config = [
                 'POST login' => 'user/login',
                 'OPTIONS login' => 'user/options',
                 'PUT marks' => 'mark/editmanymarks',
+                'GET gradebooks/<id:\d+>/download'    => 'grade/download',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'grade',

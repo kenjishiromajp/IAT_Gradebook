@@ -34,6 +34,8 @@ abstract class User extends \yii\db\ActiveRecord
         return 'User';
     }
 
+    public $username = '';
+
     /**
      * @inheritdoc
      */

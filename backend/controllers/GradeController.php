@@ -2,10 +2,11 @@
 
 namespace app\controllers;
 
-use app\models\Mark;
+use app\models\CourseClass;
 use yii\data\ActiveDataFilter;
 use yii\data\ActiveDataProvider;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class GradeController extends AuthCorActiveController
 {
@@ -43,6 +44,11 @@ class GradeController extends AuthCorActiveController
                 ->leftJoin('Student_Class as sc', 'Class.ID = sc.Class_ID')
                 ->where(['in', 'sc.Student_ID', Yii::$app->user->identity->getStudents()->select('ID')]);
         }
+        if(Yii::$app->user->identity->Role_ID === TEACHER_ROLE_ID){
+            $query
+                ->leftJoin('Teacher_Class as tc', 'Class.ID = tc.Class_ID')
+                ->where(['in', 'tc.Teacher_ID', Yii::$app->user->identity->teacher->ID]);
+        }
         return new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
@@ -50,5 +56,21 @@ class GradeController extends AuthCorActiveController
                 'params' => $requestParams,
             ],
         ]);
+    }
+
+    public function actionDownload($id)
+    {
+        $model = $this->findModel($id);
+        var_dump($model->fields());
+        die($id);
+    }
+
+    private function findModel($id)
+    {
+        $model = CourseClass::findOne($id);
+        if (isset($model)) {
+            return $model;
+        }
+        throw new NotFoundHttpException("Object not found: $id");
     }
 }
