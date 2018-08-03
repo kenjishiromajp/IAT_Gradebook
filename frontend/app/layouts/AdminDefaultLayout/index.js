@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { Redirect } from 'react-router-dom';
 import DefaultLayout from '../DefaultLayout';
-import { makeSelectCurrentUser } from '../../containers/LoginPage/selectors';
+import { makeSelectCurrentUser } from '../../containers/Pages/LoginPage/selectors';
 import { isValidUser } from '../../utils/authentication';
 
 const AdminDefaultLayout = ({ user, component: Component, ...rest }) => {

@@ -13,8 +13,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import './style.less';
-import { makeSelectCurrentUser } from '../../containers/LoginPage/selectors';
-import { logoutUser } from '../LoginPage/actions';
+import { makeSelectCurrentUser } from '../Pages/LoginPage/selectors';
+import { logoutUser } from '../Pages/LoginPage/actions';
 const MenuItem = Menu.Item;
 const MenuDivider = Menu.Divider;
 

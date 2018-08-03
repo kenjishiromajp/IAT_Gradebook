@@ -11,7 +11,7 @@ import MyHeader from './components/MyHeader';
 import { toggleSidebar } from './actions';
 import { makeSelectError, makeSelectSidebarOpened } from './selector';
 import { makeSelectLocation } from '../../containers/App/selectors';
-import { makeSelectCurrentUser } from '../../containers/LoginPage/selectors';
+import { makeSelectCurrentUser } from '../../containers/Pages/LoginPage/selectors';
 import ProfileUser from '../../containers/ProfileUserDropdownContainer/index';
 import openNotificationWithIcon from '../../utils/antd-notification';
 import routeReducer from './reducer';

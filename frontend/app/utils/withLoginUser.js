@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import { makeSelectCurrentUser } from '../containers/LoginPage/selectors';
+import { makeSelectCurrentUser } from '../containers/Pages/LoginPage/selectors';
 
 export const withLoginUser = (WrappedComponent) => {
   const withLoginUserComponent = (props) => (
@@ -20,9 +20,6 @@ export const withLoginUser = (WrappedComponent) => {
     user: makeSelectCurrentUser(),
   });
   const mapDispatchToProps = () => ({});
-  const withConnect = connect(
-    mapStateToProps,
-    mapDispatchToProps
-  );
+  const withConnect = connect(mapStateToProps, mapDispatchToProps);
   return withConnect(withLoginUserComponent);
 };

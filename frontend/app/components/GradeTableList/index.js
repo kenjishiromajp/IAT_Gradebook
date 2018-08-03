@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Row } from 'antd';
-import GradeTable from '../GradeTable';
+import GradeTableContainer from '../../containers/GradeTableContainer';
 
 class GradeTableList extends Component {
   renderGradeTables = () => {
@@ -28,7 +28,7 @@ class GradeTableList extends Component {
           </Row>
         </Row>
         <Card>
-          <GradeTable courseClass={cc} />
+          <GradeTableContainer courseClass={cc} />
         </Card>
       </div>
     ));

@@ -7,8 +7,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './style.less';
+import MarkInputContainer from '../../containers/MarkInputContainer';
 
 class GradeTable extends Component {
+  getAllTasks = () => {
+    const { courseClass: { subjects } } = this.props;
+    return subjects.reduce((accumultator, current) => {
+      let { tasks: subjectTasks } = current;
+      if (!subjectTasks.length) {
+        subjectTasks = [
+          { id: `empty-subject-${current.id}`, type: 'empty', name: '' },
+        ];
+      }
+      return [...accumultator, ...subjectTasks];
+    }, []);
+  };
   renderTasks = () => {
     const { courseClass: { subjects } } = this.props;
     const tasks = subjects.reduce((accumultator, current) => {
@@ -19,7 +32,7 @@ class GradeTable extends Component {
       return [...accumultator, ...subjectTasks];
     }, []);
     const tasksCells = tasks.map((task) => <td key={task.id}>{task.name}</td>);
-    return [<td className="compensation-cell" />, ...tasksCells];
+    return [<td key={0} className="compensation-cell" />, ...tasksCells];
   };
 
   renderSubjects = () => {
@@ -32,18 +45,43 @@ class GradeTable extends Component {
         {subject.name}
       </th>
     ));
-    return [<td className="compensation-cell" />, subjectsCells];
+    return [<td key={0} className="compensation-cell" />, subjectsCells];
   };
 
-  renderMarksByStudent = (student) => {
-    const marks = student.marks;
-    return marks.map((mark) => <th>{mark.value}</th>);
+  renderMarksByStudent = ({ marks, ...student }) => {
+    const marksByTask = marks.reduce(
+      (accumulator, current) => ({
+        ...accumulator,
+        [current.task_id]: { ...current, approved: !!current.approved },
+      }),
+      {}
+    );
+    return this.getAllTasks().map((task) => {
+      const mark = marksByTask[task.id]
+        ? marksByTask[task.id]
+        : {
+          task_id: task.id,
+          student_id: student.id,
+          class_id: this.props.courseClass.id,
+          approved: null,
+        };
+      return (
+        <th key={task.id}>
+          <MarkInputContainer
+            onBlur={this.props.markBlur}
+            onCheck={this.props.markCheck}
+            onChange={this.props.markChange}
+            value={mark}
+          />
+        </th>
+      );
+    });
   };
 
   renderStudents = () => {
     const { courseClass: { students } } = this.props;
     return students.map((student) => (
-      <tr>
+      <tr key={student.id}>
         <th className="student-name-cell">{student.name}</th>
         {this.renderMarksByStudent(student)}
       </tr>
@@ -63,8 +101,17 @@ class GradeTable extends Component {
   }
 }
 
+GradeTable.defaultProps = {
+  markBlur: () => {},
+  markCheck: () => {},
+  markChange: () => {},
+};
 GradeTable.propTypes = {
+  markBlur: PropTypes.func,
+  markCheck: PropTypes.func,
+  markChange: PropTypes.func,
   courseClass: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     students: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       name: PropTypes.string,
@@ -99,8 +146,8 @@ GradeTable.propTypes = {
         ]),
       })),
     })),
-    startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
+    startDate: PropTypes.object.isRequired,
+    endDate: PropTypes.object.isRequired,
   }).isRequired,
   actionColumn: PropTypes.func,
 };
