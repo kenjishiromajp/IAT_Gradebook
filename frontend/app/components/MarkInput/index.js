@@ -40,7 +40,7 @@ class MarkInput extends Component {
     if (description && description.length) {
       return (
         <Tooltip placement="topLeft" title={description}>
-          <div>
+          <div style={{ padding: '0 7px' }}>
             <Icon style={style} type={type} />
           </div>
         </Tooltip>

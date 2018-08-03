@@ -105,7 +105,7 @@ class LoginPage extends Component {
               className="login-form-button _uppercase"
               loading={loading}
             >
-              entrar
+              Login
             </Button>
           </FormItem>
         </Form>

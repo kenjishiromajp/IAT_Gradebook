@@ -22,17 +22,8 @@ class ProfileUserDropdownContainer extends Component {
   state = {
     visible: false,
   };
-  onCancel = () => this.setState({ visible: false });
-  showEditMyProfileModal = () => this.setState({ visible: true });
   renderMenu = () => (
     <Menu>
-      <MenuItem key="0">
-        <Link to="#" onClick={() => this.showEditMyProfileModal()}>
-          Edit Profile
-        </Link>
-      </MenuItem>
-      <MenuDivider />
-
       <MenuItem key="2">
         <Link to="" onClick={() => this.props.logoutUser()}>
           Logout

@@ -1,0 +1,42 @@
+.banner{
+  background: url('./imgs/bg.jpg');
+  background-size: cover;
+  margin: -10px -15px -10px -15px;
+  .container{
+    .wrapper{
+      position: relative;
+      z-index: 1;
+      display: flex;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: ~"calc(100vh - 64px)";
+      max-height: 1000px;
+    }
+    &::before{
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      height: 35%;
+      background: white;
+    }
+    position: relative;
+  }
+  .ant-card{
+    position: relative;
+    margin-top: 60px;
+    box-shadow: 0 0 30px -10px rgba(0,0,0,0.2);
+    max-width: 800px;
+  }
+  .illustration-1{
+    display: block;
+    width: 300px;
+    margin-top: -25px;
+    margin-left: -33px;
+  }
+}

@@ -13,21 +13,8 @@ class GradeTableList extends Component {
   renderGradeTables = () => {
     const { courseClass } = this.props;
     return courseClass.map((cc) => (
-      <div key={cc.id}>
-        <Row type="flex" justify="space-between" align="bottom">
-          <h3>{cc.name}</h3>
-          <Row type="flex" gutter={20}>
-            <div>
-              <h4>START DATE:</h4>
-              <h5>{cc.startDate.format('DD/MM/YYYY')}</h5>
-            </div>
-            <div>
-              <h4>END DATE:</h4>
-              <h5>{cc.endDate.format('DD/MM/YYYY')}</h5>
-            </div>
-          </Row>
-        </Row>
-        <Card bodyStyle={{ paddingTop: '10px' }}>
+      <div key={cc.id} style={{ marginBottom: '20px' }}>
+        <Card>
           <GradeTableContainer courseClass={cc} />
         </Card>
       </div>

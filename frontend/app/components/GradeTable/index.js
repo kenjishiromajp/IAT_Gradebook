@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Row } from 'antd';
 import './style.less';
 import MarkInputContainer from '../../containers/MarkInputContainer';
 
@@ -95,14 +96,25 @@ class GradeTable extends Component {
   };
 
   render() {
+    const { courseClass } = this.props;
     return (
-      <table className="grade-table">
-        <thead>
-          <tr role="row">{this.renderSubjects()}</tr>
-          <tr role="row">{this.renderTasks()}</tr>
-        </thead>
-        <tbody>{this.renderStudents()}</tbody>
-      </table>
+      <div>
+        <Row type="flex" align="middle" gutter={20}>
+          <h3>{courseClass.name}</h3>
+          <Row type="flex" gutter={5} className="grade-table-dates">
+            <h5>{courseClass.startDate.format('DD/MM/YYYY')}</h5>
+            <span>~</span>
+            <h5>{courseClass.endDate.format('DD/MM/YYYY')}</h5>
+          </Row>
+        </Row>
+        <table className="grade-table">
+          <thead>
+            <tr role="row">{this.renderSubjects()}</tr>
+            <tr role="row">{this.renderTasks()}</tr>
+          </thead>
+          <tbody>{this.renderStudents()}</tbody>
+        </table>
+      </div>
     );
   }
 }
