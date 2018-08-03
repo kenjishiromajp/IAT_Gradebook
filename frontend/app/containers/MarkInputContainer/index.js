@@ -12,6 +12,8 @@ import './style.less';
 import MarkInput from '../../components/MarkInput';
 import { createMark, editMark } from './actions';
 import openNotificationWithIcon from '../../utils/antd-notification';
+import { withLoginUser } from '../../utils/withLoginUser';
+import { compose } from 'redux';
 
 class MarkInputContainer extends Component {
   state = {
@@ -54,6 +56,7 @@ class MarkInputContainer extends Component {
         loading={loading}
         onBlur={this.handleBlur}
         onChange={this.handleChange}
+        readOnly={this.props.isStudent()}
       />
     );
   }
@@ -87,4 +90,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
-export default withConnect(MarkInputContainer);
+export default compose(withConnect, withLoginUser)(MarkInputContainer);

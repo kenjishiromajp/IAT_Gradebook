@@ -14,7 +14,7 @@ import { Redirect } from 'react-router-dom';
 import { Button, Form, Icon, Input, Alert } from 'antd';
 import './style.less';
 import { loginUser } from './actions';
-import LogoIAT from './components/LogoCubi';
+import LogoIAT from '../../../components/Icons/Logo/index';
 import { makeSelectError, makeSelectLoading } from './selectors';
 import { isValidUser } from '../../../utils/authentication';
 import { withLoginUser } from '../../../utils/withLoginUser';
