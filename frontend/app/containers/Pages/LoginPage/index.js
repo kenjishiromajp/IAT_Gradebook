@@ -46,7 +46,7 @@ class LoginPage extends Component {
           message={error.messageTitle}
           description={error.message}
           type="error"
-          style={{ width: '320px', marginBottom: '25px' }}
+          style={{ width: '320px', margin: 'auto', marginBottom: '25px' }}
         />
       );
     }
@@ -58,6 +58,9 @@ class LoginPage extends Component {
     const { user, loading, error } = this.props;
 
     if (isValidUser(user)) {
+      if (this.props.isStudent()) {
+        return <Redirect to="/gradebook" />;
+      }
       return <Redirect to="/" />;
     }
 
@@ -72,10 +75,10 @@ class LoginPage extends Component {
           <FormItem>
             {getFieldDecorator('email', {
               rules: [
-                { type: 'email', message: 'E-mail inválido!' },
+                { type: 'email', message: 'Invalid E-mail' },
                 {
                   required: true,
-                  message: 'Por favor, preencher o campo e-mail!',
+                  message: 'Email is required',
                 },
               ],
             })(<Input
@@ -89,7 +92,7 @@ class LoginPage extends Component {
               rules: [
                 {
                   required: true,
-                  message: 'Por favor, preencher o campo senha!',
+                  message: 'Password is required!',
                 },
               ],
             })(<Input

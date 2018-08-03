@@ -8,7 +8,8 @@ const GradeBookPage = () => (
     <Helmet>
       <title>IAT - GradeBook Page</title>
     </Helmet>
-    <h1>GradeBook page</h1>
+    <h1>Your GradeBook</h1>
+    <h3>List of your classes</h3>
     <CourseClassListContainer component={GradeTableList} />
   </div>
 );

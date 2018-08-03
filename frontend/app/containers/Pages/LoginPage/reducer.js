@@ -30,8 +30,8 @@ function loginReducer(state = initialState, action) {
         .set('currentUser', fromJS(action.currentUser));
     case LOGIN_USER_ERROR:
       return state.set('loading', false).set('error', {
-        messageTitle: 'Erro',
-        message: 'Falha falha na comunicação com servidor.',
+        messageTitle: 'Error',
+        message: 'Fail to login with these credential.',
       });
     case LOGOUT_USER:
       localStorage.clear();
