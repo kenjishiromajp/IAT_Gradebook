@@ -1,8 +1,5 @@
 import { fromJS } from 'immutable';
 import {
-  REMOVE_ALERT_CONFIGURATION,
-  REMOVE_ALERT_CONFIGURATION_SUCCESS,
-  REMOVE_ALERT_CONFIGURATION_ERROR,
   CREATE_MARK,
   CREATE_MARK_SUCCESS,
   CREATE_MARK_ERROR,
@@ -17,24 +14,16 @@ const initialState = fromJS({
   success: null,
 });
 
-function alertConfigurationFormReducer(state = initialState, action) {
+function markFormReducer(state = initialState, action) {
   switch (action.type) {
-    case REMOVE_ALERT_CONFIGURATION:
-      return state.set('loading', true).set('error', null);
-    case REMOVE_ALERT_CONFIGURATION_SUCCESS:
-      return state
-        .set('loading', false)
-        .deleteIn(['alertConfiguration', action.id.toString()]);
-    case REMOVE_ALERT_CONFIGURATION_ERROR:
-      return state.set('loading', false).set('error', action.error);
     case CREATE_MARK:
       return state.set('loading', true).set('error', null);
     case CREATE_MARK_SUCCESS:
       return state
         .set('success', {
-          alertConfiguration: action.alertConfiguration,
+          mark: action.mark,
           message: `Configuração de Alerta ${
-            action.alertConfiguration.id
+            action.mark.id
           } criado com sucesso!`,
         })
         .set('loading', false);
@@ -45,10 +34,8 @@ function alertConfigurationFormReducer(state = initialState, action) {
     case EDIT_MARK_SUCCESS:
       return state
         .set('success', {
-          alertConfiguration: action.alertConfiguration,
-          message: `AlertConfiguration ${
-            action.alertConfiguration.id
-          } editado com sucesso!`,
+          mark: action.mark,
+          message: `AlertConfiguration ${action.mark.id} editado com sucesso!`,
         })
         .set('loading', false);
     case EDIT_MARK_ERROR:
@@ -58,4 +45,4 @@ function alertConfigurationFormReducer(state = initialState, action) {
   }
 }
 
-export default alertConfigurationFormReducer;
+export default markFormReducer;

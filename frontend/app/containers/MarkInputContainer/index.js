@@ -10,7 +10,6 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import './style.less';
 import MarkInput from '../../components/MarkInput';
-import { dispatchWithPromise } from '../../utils/dispatchWithPromise';
 import { createMark, editMark } from './actions';
 import openNotificationWithIcon from '../../utils/antd-notification';
 
@@ -61,9 +60,6 @@ class MarkInputContainer extends Component {
 }
 
 MarkInputContainer.defaultProps = {
-  onBlur: () => {},
-  onCheck: () => {},
-  onChange: () => {},
   value: {},
 };
 

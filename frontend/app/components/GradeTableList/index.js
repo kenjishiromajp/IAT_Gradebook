@@ -27,7 +27,7 @@ class GradeTableList extends Component {
             </div>
           </Row>
         </Row>
-        <Card>
+        <Card bodyStyle={{ paddingTop: '10px' }}>
           <GradeTableContainer courseClass={cc} />
         </Card>
       </div>

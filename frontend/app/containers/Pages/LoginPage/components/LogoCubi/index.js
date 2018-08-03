@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.less';
 
-const LogoCubi = () => (
+const LogoIAT = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className="animated-logo"
@@ -98,4 +98,4 @@ const LogoCubi = () => (
   </svg>
 );
 
-export default LogoCubi;
+export default LogoIAT;

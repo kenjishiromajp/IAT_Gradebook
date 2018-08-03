@@ -1,8 +1,3 @@
-import { ALERTS_URL, METERS_URL, USERS_URL } from '../../../../utils/constants';
-
-const USER_ROLE = 'USER_ROLE';
-const ADMIN_ROLE = 'ADMIN_ROLE';
-
 const getMenuItems = () => [
   {
     to: '/',

@@ -65,13 +65,19 @@ class GradeTable extends Component {
           class_id: this.props.courseClass.id,
           approved: null,
         };
+      if (isNaN(task.id)) {
+        return <th key={task.id}>-</th>;
+      }
+      const checked = this.props.checkedMarks.includes(mark.id);
+      // debugger;
       return (
         <th key={task.id}>
           <MarkInputContainer
-            onBlur={this.props.markBlur}
+            canCheck={this.props.canCheck}
+            checked={checked}
             onCheck={this.props.markCheck}
-            onChange={this.props.markChange}
             value={mark}
+            max={task.totalMark}
           />
         </th>
       );
@@ -102,14 +108,14 @@ class GradeTable extends Component {
 }
 
 GradeTable.defaultProps = {
-  markBlur: () => {},
   markCheck: () => {},
-  markChange: () => {},
+  checkedMarks: [],
+  canCheck: true,
 };
 GradeTable.propTypes = {
-  markBlur: PropTypes.func,
+  canCheck: PropTypes.bool,
+  checkedMarks: PropTypes.array,
   markCheck: PropTypes.func,
-  markChange: PropTypes.func,
   courseClass: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     students: PropTypes.arrayOf(PropTypes.shape({

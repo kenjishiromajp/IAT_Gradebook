@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { Checkbox, Icon, Row } from 'antd';
+import { Checkbox, Icon, Row, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import './style.less';
 import InputDecimalNumber from '../InputDecimalNumber';
@@ -17,9 +17,11 @@ class MarkInput extends Component {
       value,
     });
   };
-  render() {
-    const { value, approved } = this.props.value;
-    const { checked, loading } = this.props;
+  handleCheck = ({ target: { checked } }) => {
+    this.props.onCheck(this.props.value, checked);
+  };
+  renderIcon = () => {
+    const { value: { approved, description } } = this.props;
     let type = 'minus';
     let style = {};
     switch (approved) {
@@ -35,6 +37,27 @@ class MarkInput extends Component {
         type = 'minus';
         break;
     }
+    if (description && description.length) {
+      return (
+        <Tooltip placement="topLeft" title={description}>
+          <div>
+            <Icon style={style} type={type} />
+          </div>
+        </Tooltip>
+      );
+    }
+    return <Icon style={style} type={type} />;
+  };
+  render() {
+    const {
+      checked,
+      loading,
+      value: mark,
+      canCheck,
+      ...restProps
+    } = this.props;
+    const { value } = mark;
+
     return (
       <Row
         type="flex"
@@ -43,14 +66,18 @@ class MarkInput extends Component {
         className="mark-input"
         style={{ flexFlow: 'row' }}
       >
-        <Checkbox onCheck={this.props.onCheck} checked={checked} />
+        {mark.id &&
+          canCheck && (
+            <Checkbox onChange={this.handleCheck} checked={checked} />
+          )}
         <InputDecimalNumber
+          {...restProps}
           min={0}
           onBlur={this.props.onBlur}
           onChange={this.handleChange}
           value={value}
         />
-        <Icon style={style} type={type} />
+        {this.renderIcon()}
         {loading && <Icon type="loading" />}
       </Row>
     );
@@ -63,8 +90,11 @@ MarkInput.defaultProps = {
   onChange: () => {},
   value: {},
   loading: false,
+  checked: false,
+  canCheck: true,
 };
 MarkInput.propTypes = {
+  canCheck: PropTypes.bool,
   onBlur: PropTypes.func,
   onCheck: PropTypes.func,
   onChange: PropTypes.func,

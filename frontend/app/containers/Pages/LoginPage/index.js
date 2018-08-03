@@ -14,7 +14,7 @@ import { Redirect } from 'react-router-dom';
 import { Button, Form, Icon, Input, Alert } from 'antd';
 import './style.less';
 import { loginUser } from './actions';
-import LogoCubi from './components/LogoCubi';
+import LogoIAT from './components/LogoCubi';
 import { makeSelectError, makeSelectLoading } from './selectors';
 import { isValidUser } from '../../../utils/authentication';
 import { withLoginUser } from '../../../utils/withLoginUser';
@@ -66,7 +66,7 @@ class LoginPage extends Component {
         {renderHead()}
         <Form onSubmit={this.handleSubmit} className="login-form">
           <div className="login-logo">
-            <LogoCubi />
+            <LogoIAT />
           </div>
           {this.renderLoginError(error)}
           <FormItem>
