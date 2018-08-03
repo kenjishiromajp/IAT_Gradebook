@@ -14,7 +14,7 @@ class GradeTableList extends Component {
     const { courseClass } = this.props;
     return courseClass.map((cc) => (
       <div key={cc.id} style={{ marginBottom: '20px' }}>
-        <Card>
+        <Card bodyStyle={{ paddingLeft: 0, paddingRight: 0 }}>
           <GradeTableContainer courseClass={cc} />
         </Card>
       </div>

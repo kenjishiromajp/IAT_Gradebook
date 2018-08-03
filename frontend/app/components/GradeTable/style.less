@@ -1,28 +1,38 @@
 .grade-table{
-  th,td{
-    border-bottom: solid 1px #c6c6c6;
-    padding: 5px 10px;
+  table{
+
+    th,td{
+      border-bottom: solid 1px #c6c6c6;
+      padding: 5px 10px;
+      max-width: 180px;
+      min-width: 180px;
+    }
+
+    .grid-table-row{
+      display: flex;
+    }
+    .grid-table-thead{
+      box-shadow: 0 0 10px rgba(0,0,0,.2);
+    }
+    .compensation-cell{
+      border: none;
+    }
+    .student-name-cell{
+      max-width: 200px;
+      min-width: 200px;
+      text-align: right;
+    }
+    thead > tr:nth-child(2) td{
+      font-size: 11px;
+    }
   }
-  //box-shadow: 0 0 10px rgba(0,0,0,.2);
-  .grid-table-row{
-    display: flex;
+  overflow-x: auto;
+
+  .grade-table-dates{
+    span,h5{
+      opacity: 0.5;
+      font-size: 12px;
+    }
   }
-  .grid-table-thead{
-    box-shadow: 0 0 10px rgba(0,0,0,.2);
-  }
-  .compensation-cell{
-    border: none;
-  }
-  .student-name-cell{
-    width: 140px;
-  }
-  thead > tr:nth-child(2) td{
-    font-size: 11px;
-  }
-}
-.grade-table-dates{
-  span,h5{
-    opacity: 0.5;
-    font-size: 12px;
-  }
+
 }

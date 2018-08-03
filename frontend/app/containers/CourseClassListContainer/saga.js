@@ -1,13 +1,14 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { fromJS } from 'immutable';
 import { getRequest } from '../../utils/request';
-import { LOAD_COURSE_CLASS } from './constants';
+import { LOAD_COURSE_CLASS, LOAD_COURSE_CLASS_SILENTLY } from './constants';
 import { loadCourseClassError, courseClassLoaded } from './actions';
 import { normalizeCourseClass } from './normalizr';
 import { API_URL } from '../../utils/constants';
 
 export default function* courseClassSaga() {
   yield all([takeLatest(LOAD_COURSE_CLASS, getAllCourseClass)]);
+  yield all([takeLatest(LOAD_COURSE_CLASS_SILENTLY, getAllCourseClass)]);
 }
 
 export function* getAllCourseClass({ params }) {

@@ -1,6 +1,7 @@
 import {
   LOAD_COURSE_CLASS,
   LOAD_COURSE_CLASS_ERROR,
+  LOAD_COURSE_CLASS_SILENTLY,
   LOAD_COURSE_CLASS_SUCCESS,
 } from './constants';
 
@@ -30,3 +31,10 @@ export function loadCourseClassError(error) {
   };
 }
 // END COURSE_CLASS LOAD
+
+export function loadCourseClassSilently(params) {
+  return {
+    type: LOAD_COURSE_CLASS_SILENTLY,
+    params,
+  };
+}

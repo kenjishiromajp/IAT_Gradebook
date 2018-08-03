@@ -8,24 +8,34 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import './style.less';
 import MarkInput from '../../components/MarkInput';
 import { createMark, editMark } from './actions';
 import openNotificationWithIcon from '../../utils/antd-notification';
 import { withLoginUser } from '../../utils/withLoginUser';
-import { compose } from 'redux';
+import { loadCourseClassSilently } from '../CourseClassListContainer/actions';
 
 class MarkInputContainer extends Component {
   state = {
     value: this.props.value,
     loading: false,
   };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.value !== prevState.value) {
+      return { value: nextProps.value };
+    }
+    return null;
+  }
   handleChange = (value) => {
     this.setState({
       value,
     });
   };
   handleBlur = () => {
+    if (this.props.value.value === this.state.value.value) {
+      return;
+    }
     this.setState({
       loading: true,
     });
@@ -34,10 +44,8 @@ class MarkInputContainer extends Component {
       : this.props.editMark;
     createOrUpdate(this.state.value)
       .then((value) => {
-        this.setState({
-          loading: false,
-          value,
-        });
+        this.props.loadCourseClass();
+        this.setState({ loading: false });
       })
       .catch((error) => {
         openNotificationWithIcon('error', error.message);
@@ -67,6 +75,7 @@ MarkInputContainer.defaultProps = {
 };
 
 MarkInputContainer.propTypes = {
+  loadCourseClass: PropTypes.func.isRequired,
   createMark: PropTypes.func.isRequired,
   editMark: PropTypes.func.isRequired,
   checked: PropTypes.bool,
@@ -87,6 +96,9 @@ const mapDispatchToProps = (dispatch) => ({
     new Promise((resolve, reject) => {
       dispatch(editMark(mark, resolve, reject));
     }),
+  loadCourseClass: () => {
+    dispatch(loadCourseClassSilently());
+  },
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

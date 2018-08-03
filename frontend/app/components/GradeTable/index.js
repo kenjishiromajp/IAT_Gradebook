@@ -57,7 +57,7 @@ class GradeTable extends Component {
       }),
       {}
     );
-    return this.getAllTasks().map((task) => {
+    const marksByTasksCell = this.getAllTasks().map((task) => {
       const mark = marksByTask[task.id]
         ? marksByTask[task.id]
         : {
@@ -70,9 +70,8 @@ class GradeTable extends Component {
         return <th key={task.id}>-</th>;
       }
       const checked = this.props.checkedMarks.includes(mark.id);
-      // debugger;
       return (
-        <th key={task.id}>
+        <th key={JSON.stringify(mark)}>
           <MarkInputContainer
             canCheck={this.props.canCheck}
             checked={checked}
@@ -83,6 +82,7 @@ class GradeTable extends Component {
         </th>
       );
     });
+    return marksByTasksCell;
   };
 
   renderStudents = () => {
@@ -98,16 +98,28 @@ class GradeTable extends Component {
   render() {
     const { courseClass } = this.props;
     return (
-      <div>
-        <Row type="flex" align="middle" gutter={20}>
+      <div className="grade-table">
+        <Row
+          type="flex"
+          align="middle"
+          gutter={20}
+          style={{
+            marginLeft: 0,
+            marginRight: 0,
+            paddingLeft: '20px',
+            paddingBottom: '10px',
+          }}
+        >
           <h3>{courseClass.name}</h3>
-          <Row type="flex" gutter={5} className="grade-table-dates">
-            <h5>{courseClass.startDate.format('DD/MM/YYYY')}</h5>
-            <span>~</span>
-            <h5>{courseClass.endDate.format('DD/MM/YYYY')}</h5>
-          </Row>
+          <div>
+            <Row type="flex" gutter={5} className="grade-table-dates">
+              <h5>{courseClass.startDate.format('DD/MM/YYYY')}</h5>
+              <span>~</span>
+              <h5>{courseClass.endDate.format('DD/MM/YYYY')}</h5>
+            </Row>
+          </div>
         </Row>
-        <table className="grade-table">
+        <table>
           <thead>
             <tr role="row">{this.renderSubjects()}</tr>
             <tr role="row">{this.renderTasks()}</tr>

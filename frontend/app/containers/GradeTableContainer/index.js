@@ -14,7 +14,7 @@ import { compose } from 'redux';
 import './style.less';
 import GradeTable from '../../components/GradeTable';
 import { editMarks } from '../MarkInputContainer/actions';
-import { loadCourseClass } from '../CourseClassListContainer/actions';
+import { loadCourseClassSilently } from '../CourseClassListContainer/actions';
 import { withLoginUser } from '../../utils/withLoginUser';
 const MenuItem = Menu.Item;
 class GradeTableContainer extends Component {
@@ -60,6 +60,9 @@ class GradeTableContainer extends Component {
       .editMarks(newCheckedMarks)
       .then(() => {
         this.props.loadCourseClass();
+        this.setState({
+          disapprovalModalVisible: false,
+        });
       })
       .catch(() => {});
   };
@@ -180,7 +183,7 @@ const mapStateToProps = createStructuredSelector({});
 
 const mapDispatchToProps = (dispatch) => ({
   loadCourseClass: () => {
-    dispatch(loadCourseClass());
+    dispatch(loadCourseClassSilently());
   },
   editMarks: (mark) =>
     new Promise((resolve, reject) => {
