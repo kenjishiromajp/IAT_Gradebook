@@ -122,7 +122,7 @@ class GradeTable extends Component {
           <Button
             size="small"
             download={`gradebook_${this.props.courseClass.id}.csv`}
-            href={`${API_URL}/gradebook/${this.props.courseClass.id}/download`}
+            href={`${API_URL}/gradebooks/${this.props.courseClass.id}/download`}
           >
             Download Excel
           </Button>
