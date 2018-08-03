@@ -182,30 +182,37 @@ class CourseClass extends \app\models\base\CourseClass
                 $studentQuery->where(['in', 'Student.ID', Yii::$app->user->identity->getStudents()->select('ID')]);
             }
             $students = $studentQuery->asArray()->all();
-            $markQuery = Mark::find()
-                ->rightJoin('Task as t', 'Mark.Task_ID = t.ID')
-                ->innerJoin('Teacher_Class as tc', 't.TeacherClass_ID= tc.ID')
-                ->select(['Mark.ID', 't.ID as Task_ID', 'Value', 'Approved'])
-                ->where([
-                    'tc.Class_ID' => $model->ID,
-                ]);
-            if(Yii::$app->user->identity->Role_ID === TEACHER_ROLE_ID){
-                $markQuery
-                    ->andWhere(['tc.Teacher_ID' => Yii::$app->user->identity->teacher->ID]);
-            }
-            foreach ($students as $key => $subject) {
-                $students[$key]['Marks'] = $markQuery->asArray()->all();
+            foreach ($students as $key => $student) {
+                $markQuery = Mark::find()
+                    ->rightJoin('Task as t', 'Mark.Task_ID = t.ID')
+                    ->innerJoin('Teacher_Class as tc', 't.TeacherClass_ID= tc.ID')
+                    ->select(['Mark.ID', 't.ID as Task_ID', 'Value', 'Approved'])
+                    ->where([
+                        'tc.Class_ID' => $model->ID,
+                    ]);
+                if(Yii::$app->user->identity->Role_ID === TEACHER_ROLE_ID){
+                    $markQuery
+                        ->andWhere(['tc.Teacher_ID' => Yii::$app->user->identity->teacher->ID]);
+                }
+                $marks = $markQuery
+                            ->innerJoin('Student_Class', 'Mark.Student_Class_ID = Student_Class.ID')
+                            ->andWhere(['Student_Class.Student_ID'=>$student['ID']])
+                            ->asArray()->all();
                 $totalMarks = 0;
-                foreach($students[$key]['Marks'] as $markKey => $mark){
+                $newMarks = [];
+                foreach($marks as $markKey => $mark){
+                    $newMark = $mark;
+                    $newMark['Approved'] = $newMark['Approved'] == '1';
                     $taskID = $mark['Task_ID'];
                     $totalMark = $tasksByID[$taskID]['TotalMark'];
                     $markWeightAverage = $tasksByID[$taskID]['MarkWeightAverage'];
 
-                    $students[$key]['Marks'][$markKey]['CorrectionPercentage'] = $mark['Value'] / $totalMark;
-                    $totalMarks += $markWeightAverage * $students[$key]['Marks'][$markKey]['CorrectionPercentage'];
-                    $students[$key]['Marks'][$markKey] = Utils::camelizeIndexes($students[$key]['Marks'][$markKey]);
+                    $newMark['CorrectionPercentage'] = $mark['Value'] / $totalMark;
+                    $totalMarks += $markWeightAverage * $newMark['CorrectionPercentage'];
+                    $newMarks[] = Utils::camelizeIndexes($newMark);
                 }
-                $students[$key]['TotalMarksCorrectionPercentage'] = $totalMarks/$totalMarksAverage;
+                $students[$key]['Marks'] = $newMarks;
+                $students[$key]['TotalMarksCorrectionPercentage'] = ($totalMarksAverage) ? $totalMarks/$totalMarksAverage : null;
                 $students[$key] = Utils::camelizeIndexes($students[$key]);
             }
             return $students;

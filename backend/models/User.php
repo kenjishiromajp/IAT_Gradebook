@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use \app\utils\Utils;
 use \app\models\base\User as BaseUser;
 use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
@@ -12,11 +13,16 @@ use yii\web\IdentityInterface;
  */
 class User extends BaseUser implements IdentityInterface
 {
+    public function load($data, $formName = null)
+    {
+        $data = Utils::pascoalizeIndexes($data);
+        return parent::load($data, $formName);
+    }
 
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['login'] = ['email', 'password'];
+        $scenarios['login'] = ['Email', 'Password'];
         return $scenarios;
     }
 
@@ -32,12 +38,13 @@ class User extends BaseUser implements IdentityInterface
 
     public function rules()
     {
-        return ArrayHelper::merge(
-            parent::rules(),
-            [
-                [['Email', 'Password'], 'required', 'on'=>'login'],
-            ]
-        );
+        return [
+            [['Email', 'Password'], 'required', 'on'=>'login'],
+            [['Name', 'Email', 'Password', 'Role_ID'], 'required', 'on'=>'default'],
+            [['Role_ID'], 'integer'],
+            [['Name', 'Email', 'Password', 'AccessToken'], 'string', 'max' => 155],
+            [['Role_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Role::className(), 'targetAttribute' => ['Role_ID' => 'ID']],
+        ];
     }
 
     public static function findByEmail($email) {
@@ -53,14 +60,14 @@ class User extends BaseUser implements IdentityInterface
         return Yii::$app->security->validatePassword($password, $this->Password);
     }
     public function getAuthKey() {
-
+        return $this->AccessToken;
     }
     public function getId() {
         return $this->ID;
     }
 
     public function validateAuthKey($authKey) {
-        return $this->AccessToken = $authKey;
+        return $this->AccessToken === $authKey;
     }
 
     public static function findIdentity($id) {

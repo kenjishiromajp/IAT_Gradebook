@@ -13,7 +13,8 @@ class CorActiveController extends \yii\rest\ActiveController
                 'class' => \yii\filters\Cors::className(),
                 'cors'  => [
                     'Origin' => ['*'],
-                    'Access-Control-Request-Headers' => ['Content-Type', 'Authorization']
+                    'Access-Control-Request-Headers' => ['Content-Type', 'Authorization'],
+                    'Access-Control-Request-Method'    => ['POST','PUT','PATCH','DELETE', 'GET'],
                 ],
             ]
         ]);

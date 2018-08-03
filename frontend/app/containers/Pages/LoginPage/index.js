@@ -16,8 +16,8 @@ import './style.less';
 import { loginUser } from './actions';
 import LogoCubi from './components/LogoCubi';
 import { makeSelectError, makeSelectLoading } from './selectors';
-import { isValidUser } from '../../utils/authentication';
-import { withLoginUser } from '../../utils/withLoginUser';
+import { isValidUser } from '../../../utils/authentication';
+import { withLoginUser } from '../../../utils/withLoginUser';
 
 const FormItem = Form.Item;
 

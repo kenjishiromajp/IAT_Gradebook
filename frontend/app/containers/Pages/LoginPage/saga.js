@@ -1,5 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import { postRequest } from '../../utils/request';
+import { postRequest } from '../../../utils/request';
 import { LOGIN_USER } from './constants';
 import {
   loginUserError,
@@ -7,7 +7,7 @@ import {
   setCurrentUserError,
   setCurrentUserSuccess,
 } from './actions';
-import { API_URL } from '../../utils/constants';
+import { API_URL } from '../../../utils/constants';
 // import { EDIT_MY_PROFILE_SUCCESS } from '../UserFormContainer/constants';
 
 export default function* loginUser() {

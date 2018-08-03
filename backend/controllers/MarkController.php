@@ -9,12 +9,7 @@ use Yii;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnprocessableEntityHttpException;
 
-class MarkController extends CorActiveController
+class MarkController extends AuthCorActiveController
 {
     public $modelClass = 'app\models\Mark';
-    public function actions()
-    {
-        $actions = parent::actions();
-        return $actions;
-    }
 }

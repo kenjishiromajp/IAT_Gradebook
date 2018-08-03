@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import CourseClassListContainer from '../CourseClassListContainer';
-import GradeTableList from '../../components/GradeTableList';
+import CourseClassListContainer from '../../CourseClassListContainer/index';
+import GradeTableList from '../../../components/GradeTableList/index';
 
 const GradeBookPage = () => (
   <div>
@@ -12,4 +12,5 @@ const GradeBookPage = () => (
     <CourseClassListContainer component={GradeTableList} />
   </div>
 );
+
 export default GradeBookPage;

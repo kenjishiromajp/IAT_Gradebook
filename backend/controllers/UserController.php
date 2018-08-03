@@ -10,14 +10,21 @@ class UserController extends CorActiveController
     public $modelClass = 'app\models\User';
     public function actionLogin() {
         $params = \Yii::$app->getRequest()->getBodyParams();
-        $user = User::findByEmail($params['Email']);
+        $user = new User();
         $user->scenario = 'login';
-        if ($user && $user->validatePassword($params['Password'])) {
+        $user->load($params, '');
+        if(!$user->validate()){
+            return $user;
+        }
+        $email = $user->Email;
+        $password = $user->Password;
+        $user = User::findByEmail($email);
+        if ($user && $user->validatePassword($password)) {
             return [
-                'Name' => $user->Name,
-                'Role' => $user->role->Name,
-                'Email' => $user->Email,
-                'Token' => $user->generateToken()
+                'name' => $user->Name,
+                'role' => $user->role->Name,
+                'email' => $user->Email,
+                'token' => $user->generateToken()
             ];
         }
         \Yii::$app->getResponse()->statusCode = 401;
