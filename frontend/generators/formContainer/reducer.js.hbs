@@ -33,7 +33,7 @@ function {{ camelCase name }}FormReducer(state = initialState, action) {
       return state
         .set('success', {
           {{ camelCase name }}: action.{{ camelCase name }},
-          message: `{{ properCase name }} ${action.{{ camelCase name }}.id} criado com sucesso!`,
+          message: `{{ properCase name }} ${action.{{ camelCase name }}.id} created!`,
         })
         .set('loading', false);
     case CREATE_{{ constantCase name }}_ERROR:
@@ -44,7 +44,7 @@ function {{ camelCase name }}FormReducer(state = initialState, action) {
       return state
         .set('success', {
           {{ camelCase name }}: action.{{ camelCase name }},
-          message: `{{ properCase name }} ${action.{{ camelCase name }}.id} editado com sucesso!`,
+          message: `{{ properCase name }} ${action.{{ camelCase name }}.id} edited!`,
         })
         .set('loading', false);
     case EDIT_{{ constantCase name }}_ERROR:

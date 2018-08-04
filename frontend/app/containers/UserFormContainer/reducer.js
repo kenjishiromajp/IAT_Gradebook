@@ -33,7 +33,7 @@ function userFormReducer(state = initialState, action) {
       return state
         .set('success', {
           user: action.user,
-          message: `User ${action.user.id} criado com sucesso!`,
+          message: `User ${action.user.id} created!`,
         })
         .set('loading', false);
     case CREATE_USER_ERROR:
@@ -44,7 +44,7 @@ function userFormReducer(state = initialState, action) {
       return state
         .set('success', {
           user: action.user,
-          message: `User ${action.user.id} editado com sucesso!`,
+          message: `User ${action.user.id} edited!`,
         })
         .set('loading', false);
     case EDIT_USER_ERROR:

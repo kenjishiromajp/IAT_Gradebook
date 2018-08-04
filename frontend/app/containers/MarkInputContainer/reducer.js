@@ -22,9 +22,7 @@ function markFormReducer(state = initialState, action) {
       return state
         .set('success', {
           mark: action.mark,
-          message: `Configuração de Alerta ${
-            action.mark.id
-          } criado com sucesso!`,
+          message: `Configuração de Alerta ${action.mark.id} Created!`,
         })
         .set('loading', false);
     case CREATE_MARK_ERROR:
@@ -35,7 +33,7 @@ function markFormReducer(state = initialState, action) {
       return state
         .set('success', {
           mark: action.mark,
-          message: `AlertConfiguration ${action.mark.id} editado com sucesso!`,
+          message: `AlertConfiguration ${action.mark.id} edited!`,
         })
         .set('loading', false);
     case EDIT_MARK_ERROR:
