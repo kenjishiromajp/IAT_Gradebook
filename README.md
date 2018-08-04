@@ -14,31 +14,7 @@ and Backend (ServerSide - REST WebService) with PHP, so following instructions a
 **For Both installation, clone the project**
 `git clone https://github.com/kenjishiromajp/IAT_Gradebook.git`.
 
-### FRONT-END
-
-1.  **Setup Initial Requirement of Server**
-
-    1.  Must have **Node 9.8.0^** installed on machine, we recommend **yarn** for installation of dependencies
-
-2. **Go inside of folder frontend**
-    
-    `cd frontend`
-
-3.  **Install Dependencies**
-
-    `npm install` or `yarn`
-
-4.  **Run the Front End application**
-
-    `npm start` ou `yarn start`
-
-    This command will run build in `dev` environment and init the web server, and will open the `bundle split configuration page` of application, and `Hot Reload` is implemented for this environment. You can access the application using the link: `http://localhost:3000`.
-
-    By Default this application is sending the requests to `http://localhost:3001`, you must change the variable `API_URL` to change the requests to another server.
-
-If you want to make a `build` just execute the command `npm run build` or `yarn build` and folder `build` will be generated, where you can find the files to send to your web server.
-
-### BACK-END
+### BACK-END - WEBSERVICE
 
 1.  **Setup Initial Requirement of Server**
 
@@ -64,6 +40,63 @@ If you want to make a `build` just execute the command `npm run build` or `yarn 
     `php yii serve --port=3001`
 
 After that the webservice is available on link `http://localhost:3001`
+
+---
+
+### FRONT-END - SPA
+
+1.  **Setup Initial Requirement of Server**
+
+    1.  Must have **Node 9.8.0^** installed on machine, we recommend **yarn** for installation of dependencies
+
+2. **Go inside of folder frontend**
+    
+    `cd frontend`
+
+3.  **Install Dependencies**
+
+    `npm install` or `yarn`
+
+4.  **Run the Front End application**
+
+    `npm start` ou `yarn start`
+
+    This command will run build in `dev` environment and init the web server, and will open the `bundle split configuration page` of application, and `Hot Reload` is implemented for this environment. You can access the application using the link: `http://localhost:3000`.
+
+    By Default this application is sending the requests to `http://localhost:3001`, you must change the variable `API_URL` to change the requests to another server.
+
+If you want to make a `build` just execute the command `npm run build` or `yarn build` and folder `build` will be generated, where you can find the files to send to your web server.
+
+## Credentials to Test the application
+
+If you used the dump there are following users to test the application
+
+| Email                   | Password  |
+|-------------------------|-----------|
+| admin@admin.com         | admin     |
+| principal@principal.com | principal |
+| teacher@teacher.com     | teacher   |
+| student@student.com     | student   |
+
+## Back End Structure
+
+```code
+├── assets                      // Folder with assets
+├── config                      // Configuration files folder
+│   ├── db.php                  // Database Configuration file 
+│   ├── web.php                 // Application Configuration file
+│   └── params.php              // Pamaters to get in any part of application, here is the email credentials to Mailer
+├── controllers                 // Controller Files Folder
+│   └── GradeController.php     
+├── dump                        // Folder with dump
+├── models                      // Model Files folder
+│   └── Student.php            
+├── vendor                      // Folder with the vendors installed with composer
+├── web                         // Root for the WebService
+│   └── index.php               // Entry point of application
+├── yii                         // File that we use to up the application
+└── composer.json               // File that describes dependencies of application
+```
 
 ---
 
@@ -133,29 +166,6 @@ After that the webservice is available on link `http://localhost:3001`
 ├── generators                  // Code Generators
 ├── package.json
 └── server                      // Files of dev server configuration
-```
-
----
-
-
-## Back End Structure
-
-```code
-├── assets                      // Folder with assets
-├── config                      // Configuration files folder
-│   ├── db.php                  // Database Configuration file 
-│   ├── web.php                 // Application Configuration file
-│   └── params.php              // Pamaters to get in any part of application, here is the email credentials to Mailer
-├── controllers                 // Controller Files Folder
-│   └── GradeController.php     
-├── dump                        // Folder with dump
-├── models                      // Model Files folder
-│   └── Student.php            
-├── vendor                      // Folder with the vendors installed with composer
-├── web                         // Root for the WebService
-│   └── index.php               // Entry point of application
-├── yii                         // File that we use to up the application
-└── composer.json               // File that describes dependencies of application
 ```
 
 ---
