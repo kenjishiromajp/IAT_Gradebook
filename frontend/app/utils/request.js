@@ -89,6 +89,9 @@ export const requestDownload = (
       if (response.status.toString().match(/^4/)) {
         throw new RequestError(`${response.status} Error`, response);
       }
+      if (response.status.toString().match(/^5/)) {
+        throw new RequestError(`${response.status} Error`, response);
+      }
       return Promise.resolve(response.blob());
     })
     .then((blob) => {
@@ -137,6 +140,9 @@ const request = (
   return fetch(url, newOptions)
     .then((response) => {
       if (response.status.toString().match(/^4/)) {
+        throw new RequestError(`${response.status} Error`, response);
+      }
+      if (response.status.toString().match(/^5/)) {
         throw new RequestError(`${response.status} Error`, response);
       }
       return Promise.resolve(response.json());

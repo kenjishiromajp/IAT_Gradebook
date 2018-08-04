@@ -8,13 +8,9 @@ import {
   setCurrentUserSuccess,
 } from './actions';
 import { API_URL } from '../../../utils/constants';
-// import { EDIT_MY_PROFILE_SUCCESS } from '../UserFormContainer/constants';
 
 export default function* loginUser() {
-  yield all([
-    takeLatest(LOGIN_USER, getAllLoginUser),
-    // takeLatest(EDIT_MY_PROFILE_SUCCESS, setCurrentUser),
-  ]);
+  yield all([takeLatest(LOGIN_USER, getAllLoginUser)]);
 }
 
 const setCurrentUserLocalStorage = (currentUser) =>
