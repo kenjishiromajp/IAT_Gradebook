@@ -62,8 +62,9 @@ class MarkController extends AuthCorActiveController
             }
             $newMarks[] = $model;
         }
-        $this->verifyIfAllMarksOfOneSubjectIsReady($marks);
+
         if(count($approvedMarks)){
+            $this->notifyTeachers($approvedMarks);
             $this->notifyStudents($approvedMarks);
         }
         return $newMarks;
@@ -113,19 +114,58 @@ class MarkController extends AuthCorActiveController
     }
 
     private function notifyStudents($approvedMarks){
-        $htmlBody = '<h3>Hi there! following Marks are available for you!</h3>';
-        $ul = '<ul>';
-        foreach ($approvedMarks as $mark) {
-            $htmlBody .= '<li> <strong>'.$mark->task->Name.'</strong>: '.$mark->Value.'</li>';
+        $approvedMarksIds = array_map(function($mark){
+            return $mark->ID;
+        },$approvedMarks);
+        $htmlBody = '<h3>Hi Student! following Marks are available for you!</h3>';
+        $htmlBody .= '<p>Please take a look to the system to see the update!</p>';
+
+        $users = Mark::find()
+            ->alias('m')
+            ->select('u.Name, u.Email ')
+            ->leftJoin('Student_Class as sc', 'm.Student_Class_ID=sc.ID')
+            ->leftJoin('Student as s', 'sc.Student_ID=s.ID')
+            ->leftJoin('User as u', 's.User_ID=u.ID')
+            ->groupBy('u.ID')
+            ->where(['in', 'm.ID' , $approvedMarksIds])
+            ->asArray()->all();
+
+        foreach ($users as $user) {
+            Yii::$app->mailer->compose()
+                ->setFrom(Yii::$app->params['adminEmail'])
+                ->setTo($user['Email'])
+                ->setSubject('Hey Student! Some Marks was approved! - IAT')
+                ->setHtmlBody($htmlBody)
+                ->send();
         }
-        $ul .= '</ul>';
-        $htmlBody .= $ul;
-        Yii::$app->mailer->compose()
-            ->setFrom(Yii::$app->params['adminEmail'])
-            ->setTo($mark->student->user->Email)
-            ->setSubject($mark->student->user->Name.' some Marks was approved! - IAT')
-            ->setHtmlBody($htmlBody)
-            ->send();
+    }
+
+    private function notifyTeachers($approvedMarks){
+        $approvedMarksIds = array_map(function($mark){
+            return $mark->ID;
+        },$approvedMarks);
+        $teachers = Mark::find()
+            ->alias('m')
+            ->select('u.Name, u.Email ')
+            ->leftJoin('Task as t', 'm.Task_ID=t.ID')
+            ->leftJoin('Teacher_Class as tc', 't.TeacherClass_ID=tc.ID')
+            ->leftJoin('Teacher as tea', 'tc.Teacher_ID=tea.ID')
+            ->leftJoin('User as u', 'tea.ID=u.ID')
+            ->groupBy('u.ID')
+            ->where(['in', 'm.ID' , $approvedMarksIds])
+            ->asArray()->all();
+
+        $htmlBody = '<h3>Hi Teacher! Some Marks were Approved!</h3>';
+        $htmlBody .= '<p>Please take a look to the system to see the update!</p>';
+        foreach ($teachers as $teacher) {
+            Yii::$app->mailer->compose()
+                ->setFrom(Yii::$app->params['adminEmail'])
+                ->setTo($teacher['Email'])
+                ->setSubject('Hey Teacher! Some Marks was approved! - IAT')
+                ->setHtmlBody($htmlBody)
+                ->send();
+        }
+
     }
 
     private function findModel($id)
