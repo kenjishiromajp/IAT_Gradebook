@@ -31,6 +31,7 @@ class UserFormContainer extends Component {
     }
     if (success && prevProps.success !== success) {
       openNotificationWithIcon('success', success.message);
+      this.props.onSucces(success);
     }
   }
   handleCancel = () => {
@@ -57,6 +58,13 @@ class UserFormContainer extends Component {
 }
 
 UserFormContainer.propTypes = {
+  onSucces: () => {},
+  onCancel: () => {},
+};
+
+UserFormContainer.propTypes = {
+  onSucces: PropTypes.func,
+  onCancel: PropTypes.func,
   editUser: PropTypes.func.isRequired,
   createUser: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,

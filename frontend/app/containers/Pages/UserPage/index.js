@@ -39,7 +39,7 @@ class UserPage extends Component {
               onOpen={this.handleOpenModal}
             >
               <h3>Register User</h3>
-              <UserFormContainer />
+              <UserFormContainer onSucces={this.handleCanceModal} />
             </ModalButton>
           </div>
         </Row>

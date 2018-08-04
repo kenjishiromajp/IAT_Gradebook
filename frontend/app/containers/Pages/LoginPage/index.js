@@ -98,7 +98,7 @@ class LoginPage extends Component {
             })(<Input
               prefix={<Icon type="lock" className="input-icon" />}
               type="password"
-              placeholder="Senha"
+              placeholder="Password"
             />)}
           </FormItem>
           <FormItem className="_align-center">

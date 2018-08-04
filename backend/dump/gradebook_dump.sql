@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 04-Ago-2018 às 08:29
+-- Generation Time: 04-Ago-2018 às 17:55
 -- Versão do servidor: 10.1.34-MariaDB
 -- PHP Version: 7.2.7
 
@@ -86,9 +86,10 @@ CREATE TABLE `Mark` (
 
 INSERT INTO `Mark` (`ID`, `Student_Class_ID`, `Task_ID`, `Value`, `Approved`, `Description`) VALUES
 (69, 1, 11, '10.00', 1, NULL),
-(70, 1, 12, '10.00', 1, NULL),
-(71, 2, 11, '10.00', 1, NULL),
-(73, 2, 12, '10.00', 1, NULL);
+(70, 1, 12, '10.00', 0, 'Test of why I disapproved'),
+(71, 2, 11, '10.00', 0, 'Test of why I disapproved'),
+(73, 2, 12, '10.00', 0, 'Test of why I disapproved'),
+(74, 3, 7, '3.33', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -148,7 +149,9 @@ CREATE TABLE `Student` (
 INSERT INTO `Student` (`ID`, `User_ID`) VALUES
 (1, 5),
 (2, 7),
-(3, 10);
+(3, 10),
+(4, 19),
+(5, 21);
 
 -- --------------------------------------------------------
 
@@ -372,16 +375,22 @@ CREATE TABLE `User` (
 --
 
 INSERT INTO `User` (`ID`, `Name`, `Email`, `Password`, `AccessToken`, `Role_ID`) VALUES
-(2, 'Admin', 'admin@admin.com', '$2y$13$d4Y9tx7qa6WzgLaaW/tK3OsTb.jJQXiBbcH.TdiPSZeHqentqnQ0e', 'OfljL7yLTgg2xvgJjhUrvkmBTRva9R_T', 1),
-(3, 'Principal', 'principal@principal.com', '$2y$13$3r0uWtX09uDJ18gHGpxtgu/4znvvaubglsuxXv8KVuUk1F.YNQnpC', 'j8-AnETDWvBSCU3lER0EoZDcPgsgo2xK', 2),
-(4, 'Teacher', 'teacher@teacher.com', '$2y$13$xBC6myFuF3rracI.0jDVEe4QDKunIFdaR4HIHH31bhyzfzhKxQnje', 'ptIhyt0DRsYUdXh8jJwzgtXS1-57HU7h', 3),
-(5, 'Student', 'student@student.com', '$2y$13$uLYb22cnIjdHZGNRQsnX2uG/w0y4WEhC4uLV0niHKsYZNzOX2pgq6', 'itzafEzgN-MBeMDGeVy_3pTCHAzYBpQg', 4),
+(2, 'Admin', 'admin@admin.com', '$2y$13$d4Y9tx7qa6WzgLaaW/tK3OsTb.jJQXiBbcH.TdiPSZeHqentqnQ0e', 'EvDYsoyVuWlpMe-CgvJtM63UmGYSz_Xt', 1),
+(3, 'Principal', 'principal@principal.com', '$2y$13$3r0uWtX09uDJ18gHGpxtgu/4znvvaubglsuxXv8KVuUk1F.YNQnpC', 'o5D5MRN0vzfSM8-wj1HFHJ2S4A736xdX', 2),
+(4, 'Teacher', 'teacher@teacher.com', '$2y$13$xBC6myFuF3rracI.0jDVEe4QDKunIFdaR4HIHH31bhyzfzhKxQnje', 'S5gsNuT_mct4kJVTNpLc2iRU6c1823H0', 3),
+(5, 'Student', 'student@student.com', '$2y$13$uLYb22cnIjdHZGNRQsnX2uG/w0y4WEhC4uLV0niHKsYZNzOX2pgq6', 'Ql3ZEdJ63cx3MDgbJYQyJ1fKJlwUdxNP', 4),
 (6, 'Other Teacher', 'otherteacher@otherteacher.com', '$2y$13$HwQzS8yxXIbEftwKD./J8e0fUgx0iR32ZVHnvqUpAtReSXrOUUCV2', '5gIMLf-tCLdFRYpzcAbjHX3k0cgtJRXl', 3),
 (7, 'Other Student', 'otherstudent@otherstudent.com', '$2y$13$uLYb22cnIjdHZGNRQsnX2uG/w0y4WEhC4uLV0niHKsYZNzOX2pgq6', 'zIub-Gwuj7w8bETWyZjeRgSK23Z7P4IS', 4),
 (10, 'daddasd', 'saddsadd@jdhsakd.com', '$2y$13$.GWe1dNmYstju54GGxbMFuDpc16f/YXqv4PDYk6PFDk5HrmzDBvIa', NULL, 4),
 (13, 'teacher doido', 'teacherzao@teacherzao.com', '$2y$13$QKFzV3CVecg/svpygs8Ls.kxq9QN2JrpAXlTG61DXNSbyMVNhl12W', NULL, 3),
 (14, 'teacher doido', 'ototeacherzao@teacherzao.com', '$2y$13$YsB68UIY0JY0.upyBGgm7uLSaxGXN0.ErITFSeVO.4xVmCgDBQIQy', NULL, 3),
-(15, 'um prof', 'prof@prof.com', '$2y$13$HwQzS8yxXIbEftwKD./J8e0fUgx0iR32ZVHnvqUpAtReSXrOUUCV2', 'uRUmzjvhLHjg7RgJW9qW1sJJCbdV88Uo', 3);
+(15, 'um prof', 'prof@prof.com', '$2y$13$HwQzS8yxXIbEftwKD./J8e0fUgx0iR32ZVHnvqUpAtReSXrOUUCV2', 'uRUmzjvhLHjg7RgJW9qW1sJJCbdV88Uo', 3),
+(16, 'Name of User', 'nameofuser@nameofuser.com', '$2y$13$OyuVA.hG4FDAqRqAPn.Zkeeyb.VZg6QrnHT8ggsepNPLP8SOXiOaO', NULL, 1),
+(17, 'doidera', 'doido@doido.com', '$2y$13$abxcFlLry1W7/rOp8xazTuKSW6jPjTMOvfigeustU0z5jVHiWLC0y', NULL, 1),
+(18, 'sadasdasd', 'dsadsaj@jshajk.com', '$2y$13$H2ED4Jme2nXjArYnNrHF9.hKoNTpmbeqXakvFbclVS.KPVGxIEQF6', NULL, 1),
+(19, 'a', 'a@a.com', '$2y$13$E6nNvAMwCBw6fCoXW0iPZOApTmkZEfgHBbUX7evMAA4zVJjwWEQ6C', NULL, 4),
+(20, 'criadno', 'cria@cria.com', '$2y$13$l5tC2TgybGOx0KAJFVITy.65uQwwqet8/4t0MdhlXpseyPFX2hegS', NULL, 1),
+(21, 'dsadsadsa', 'dsdasd@dsadas.com', '$2y$13$Asw./.hYwnCb3mK/3milQOutv1m59IMdNm03nZ5XjE0S/ew7kSHIi', NULL, 4);
 
 --
 -- Indexes for dumped tables
@@ -519,7 +528,7 @@ ALTER TABLE `Course`
 -- AUTO_INCREMENT for table `Mark`
 --
 ALTER TABLE `Mark`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `Role`
@@ -537,7 +546,7 @@ ALTER TABLE `School`
 -- AUTO_INCREMENT for table `Student`
 --
 ALTER TABLE `Student`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `Student_Class`
@@ -579,7 +588,7 @@ ALTER TABLE `Teacher_Class`
 -- AUTO_INCREMENT for table `User`
 --
 ALTER TABLE `User`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables

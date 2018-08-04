@@ -22,7 +22,7 @@ export default function* userData() {
 export function* createUserForm({ user }) {
   try {
     const userForm = yield call(postRequest, `${API_URL}/users`, user);
-    yield put(userFormCreated(userForm.data));
+    yield put(userFormCreated(userForm));
   } catch (error) {
     yield put(createUserFormError(error));
   }
@@ -31,7 +31,7 @@ export function* createUserForm({ user }) {
 export function* editUserForm({ user }) {
   try {
     const userForm = yield call(putRequest, `${API_URL}/user/${user.id}`, user);
-    yield put(userEdited(userForm.data));
+    yield put(userEdited(userForm));
   } catch (error) {
     yield put(editUserError(error));
   }
