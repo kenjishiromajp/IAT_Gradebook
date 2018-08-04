@@ -2,7 +2,7 @@
 
 > Gradebook Manager
 
-<a href="#"><img width="728" src="https://raw.githubusercontent.com/kenjishiromajp/IAT_Gradebook/master/imgs/background_image.png" alt="IAT - Dev Challenge" /></a>
+<a href="#"><img width="728" src="imgs/background_image.png" alt="IAT - Dev Challenge" /></a>
 
 ---
 
