@@ -80,7 +80,7 @@ class GradeController extends AuthCorActiveController
             $taskID = $mark['Task_ID'];
             $taskName = $mark['TaskName'].' ('.$mark['Subject'].')';
             $studentName = $mark['StudentName'];
-            if(!in_array($taskName,$columns)){
+            if(!in_array($taskID,$columns)){
                 $columns[] = $taskID;
                 $headers[$taskID] = $taskName;
             }
