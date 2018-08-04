@@ -107,4 +107,19 @@ class Mark extends BaseMark
             ->where(['m.ID'=>$this->ID]);
         return $query;
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubject()
+    {
+        $query = Subject::find()
+            ->select('s.*')
+            ->alias('s')
+            ->leftJoin('Teacher_Class AS tc', 's.ID = tc.Subject_ID')
+            ->leftJoin('Task AS t', 'tc.ID = t.TeacherClass_ID')
+            ->leftJoin('Mark AS m', 't.ID = m.Task_ID')
+            ->where(['m.ID'=>$this->ID]);
+        return $query;
+    }
 }

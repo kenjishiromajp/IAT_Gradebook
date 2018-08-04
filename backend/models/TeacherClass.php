@@ -31,4 +31,11 @@ class TeacherClass extends BaseTeacherClass
             ]
         );
     }
+
+    public function getMarks(){
+        return Mark::find()
+            ->alias('m')
+            ->leftJoin('Task AS t', 'm.Task_ID=t.ID')
+            ->where(['t.TeacherClass_ID'=>$this->ID]);
+    }
 }
