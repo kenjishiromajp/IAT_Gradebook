@@ -102,7 +102,7 @@ class GradeTable extends Component {
   };
 
   render() {
-    const { courseClass } = this.props;
+    const { courseClass, canDownload } = this.props;
     return (
       <div className="grade-table">
         <Row
@@ -124,14 +124,16 @@ class GradeTable extends Component {
               <h5>{courseClass.endDate.format('DD/MM/YYYY')}</h5>
             </Row>
           </div>
-          <Button
-            size="small"
-            onClick={() =>
-              this.downloadExcel(`${API_URL}/gradebooks/${this.props.courseClass.id}/download`)
-            }
-          >
-            Download Excel
-          </Button>
+          {canDownload && (
+            <Button
+              size="small"
+              onClick={() =>
+                this.downloadExcel(`${API_URL}/gradebooks/${this.props.courseClass.id}/download`)
+              }
+            >
+              Download Excel
+            </Button>
+          )}
         </Row>
         <table>
           <thead>
@@ -149,8 +151,10 @@ GradeTable.defaultProps = {
   markCheck: () => {},
   checkedMarks: [],
   canCheck: true,
+  canDownload: true,
 };
 GradeTable.propTypes = {
+  canDownload: PropTypes.bool,
   canCheck: PropTypes.bool,
   checkedMarks: PropTypes.array,
   markCheck: PropTypes.func,

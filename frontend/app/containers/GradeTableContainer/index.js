@@ -121,6 +121,7 @@ class GradeTableContainer extends Component {
         </Modal>
         <GradeTable
           {...this.props}
+          canDownload={!this.props.isStudent()}
           canCheck={this.props.isAdmin() || this.props.isPrincipal()}
           checkedMarks={checkedMarks}
           markCheck={this.handleMarkCheck}
