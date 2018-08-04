@@ -93,4 +93,18 @@ class Mark extends BaseMark
         }
         return parent::load($data, $formName);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudent()
+    {
+        $query = Student::find()
+            ->select('s.*')
+            ->alias('s')
+            ->leftJoin('Student_Class AS sc', 's.ID = sc.Student_ID')
+            ->leftJoin('Mark AS m', 'sc.ID = m.Student_Class_ID')
+            ->where(['m.ID'=>$this->ID]);
+        return $query;
+    }
 }
