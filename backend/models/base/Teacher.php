@@ -10,7 +10,6 @@ use Yii;
  * This is the base-model class for table "Teacher".
  *
  * @property integer $ID
- * @property integer $User_ID
  *
  * @property \app\models\User $user
  * @property \app\models\TeacherClass[] $teacherClasses
@@ -38,9 +37,9 @@ abstract class Teacher extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['User_ID'], 'required'],
-            [['User_ID'], 'integer'],
-            [['User_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['User_ID' => 'ID']]
+            [['ID'], 'required'],
+            [['ID'], 'integer'],
+            [['ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['ID' => 'ID']]
         ];
     }
 
@@ -51,7 +50,6 @@ abstract class Teacher extends \yii\db\ActiveRecord
     {
         return [
             'ID' => 'ID',
-            'User_ID' => 'User  ID',
         ];
     }
 
@@ -60,7 +58,7 @@ abstract class Teacher extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(\app\models\User::className(), ['ID' => 'User_ID']);
+        return $this->hasOne(\app\models\User::className(), ['ID' => 'ID']);
     }
 
     /**

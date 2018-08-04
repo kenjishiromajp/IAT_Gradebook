@@ -16,8 +16,12 @@ class MarkController extends AuthCorActiveController
         $marks = Yii::$app->getRequest()->getBodyParams();
         $newMarks = [];
         foreach ($marks as $mark) {
-            $model = $this->findModel($mark['id']);
-            $model->load(Utils::pascoalizeIndexes($mark), '');
+            $newMark = Utils::pascoalizeIndexes($mark);
+            if($newMark['Approved']){
+                $newMark['Description'] = null;
+            }
+            $model = $this->findModel($newMark['ID']);
+            $model->load(Utils::pascoalizeIndexes($newMark), '');
             if ($model->save() === false && !$model->hasErrors()) {
                 throw new ServerErrorHttpException('Failed to update the object for unknown reason.');
             }

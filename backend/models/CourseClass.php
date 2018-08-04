@@ -200,6 +200,10 @@ class CourseClass extends \app\models\base\CourseClass
                     $markQuery
                         ->andWhere(['tc.Teacher_ID' => Yii::$app->user->identity->teacher->ID]);
                 }
+                if(Yii::$app->user->identity->Role_ID === STUDENT_ROLE_ID){
+                    $markQuery
+                        ->andWhere(['Mark.Approved' => 1]);
+                }
                 $marks = $markQuery
                             ->innerJoin('Student_Class', 'Mark.Student_Class_ID = Student_Class.ID')
                             ->andWhere(['Student_Class.Student_ID'=>$student['ID']])
@@ -207,8 +211,16 @@ class CourseClass extends \app\models\base\CourseClass
                 $totalMarks = 0;
                 $newMarks = [];
                 foreach($marks as $markKey => $mark){
+                    $approved = $mark['Approved'];
+                    switch($approved){
+                        case '1':
+                            $approved = true;
+                            break;
+                        case '0':
+                            $approved = false;
+                    };
                     $newMark = ArrayHelper::merge($mark,[
-                        'Approved' => (bool)$mark['Approved'] == '1',
+                        'Approved' => $approved,
                         'Value' => (float)$mark['Value'],
                     ]);
                     $taskID = $mark['Task_ID'];

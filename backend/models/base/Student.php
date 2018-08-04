@@ -37,9 +37,8 @@ abstract class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['User_ID', 'Value', 'Approved'], 'required'],
-            [['User_ID', 'Approved'], 'integer'],
-            [['Value'], 'number'],
+            [['User_ID'], 'required'],
+            [['User_ID'], 'integer'],
             [['User_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['User_ID' => 'ID']]
         ];
     }
@@ -52,8 +51,6 @@ abstract class Student extends \yii\db\ActiveRecord
         return [
             'ID' => 'ID',
             'User_ID' => 'User  ID',
-            'Value' => 'Value',
-            'Approved' => 'Approved',
         ];
     }
 

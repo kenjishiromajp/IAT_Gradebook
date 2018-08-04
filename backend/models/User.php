@@ -41,6 +41,7 @@ class User extends BaseUser implements IdentityInterface
         return [
             [['Email', 'Password'], 'required', 'on'=>'login'],
             [['Name', 'Email', 'Password', 'Role_ID'], 'required', 'on'=>'default'],
+            [['Email'], 'unique', 'targetAttribute' => 'Email', 'on'=>'default'],
             [['Role_ID'], 'integer'],
             [['Name', 'Email', 'Password', 'AccessToken'], 'string', 'max' => 155],
             [['Role_ID'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Role::className(), 'targetAttribute' => ['Role_ID' => 'ID']],
@@ -77,17 +78,40 @@ class User extends BaseUser implements IdentityInterface
         return static::findOne(['AccessToken' => $token]);
     }
 
-    public function fields() {
-        $fields = parent::fields();
-        unset($fields['Password']);
-        return $fields;
-    }
-
     public function beforeSave($insert)
     {
         if($this->isNewRecord){
             $this->Password = Yii::$app->security->generatePasswordHash($this->Password);
         }
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if($insert){
+            switch ($this->Role_ID){
+                case TEACHER_ROLE_ID:
+                    $teacher = new Teacher();
+                    $teacher->ID = $this->ID;
+                    $teacher->save();
+                    break;
+                case STUDENT_ROLE_ID:
+                    $student = new Student();
+                    $student->User_ID = $this->ID;
+                    $student->save();
+                    break;
+            }
+        }
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function fields() {
+        $fields = parent::fields();
+        $fields['Role'] = function($model){
+            return $model->role->Name;
+        };
+        unset($fields['Role_ID']);
+        unset($fields['Password']);
+        return Utils::camelizeIndexes($fields);
     }
 }

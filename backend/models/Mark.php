@@ -68,10 +68,10 @@ class Mark extends BaseMark
                 'Class_ID' => $this->Class_ID,
             ])->one();
             $this->Student_Class_ID = $studentClass->ID;
-            $this->Approved = false;
+            $this->Approved = null;
         }
         if(Yii::$app->user->identity->Role_ID >= TEACHER_ROLE_ID){
-            $this->Approved = false;
+            $this->Approved = null;
         }
         return parent::beforeSave($insert);
     }
