@@ -14,6 +14,7 @@ class MarkController extends AuthCorActiveController
 
     public function actionEditmanymarks(){
         $marks = Yii::$app->getRequest()->getBodyParams();
+        $approvedMarks = [];
         $newMarks = [];
         foreach ($marks as $mark) {
             $newMark = Utils::pascoalizeIndexes($mark);
@@ -25,14 +26,36 @@ class MarkController extends AuthCorActiveController
             if ($model->save() === false && !$model->hasErrors()) {
                 throw new ServerErrorHttpException('Failed to update the object for unknown reason.');
             }
+            if($model->Approved){
+                $approvedMarks[] = $model;
+            }
             $newMarks[] = $model;
         }
-        $this->verifyIfAllMarksOfOneGradebookIsReady($marks);
+        $this->verifyIfAllMarksOfOneSubjectIsReady($marks);
+        if(count($approvedMarks)){
+            $this->notifyStudents($approvedMarks);
+        }
         return $newMarks;
     }
 
-    private function verifyIfAllMarksOfOneGradebookIsReady($marks){
+    private function verifyIfAllMarksOfOneSubjectIsReady($marks){
 
+    }
+
+    private function notifyStudents($approvedMarks){
+        $htmlBody = '<h3>Hi there! following Marks are available for you!</h3>';
+        $ul = '<ul>';
+        foreach ($approvedMarks as $mark) {
+            $htmlBody .= '<li> <strong>'.$mark->task->Name.'</strong>: '.$mark->Value.'</li>';
+        }
+        $ul .= '</ul>';
+        $htmlBody .= $ul;
+        Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($mark->student->user->Email)
+            ->setSubject($mark->student->user->Name.' some Marks was approved! - IAT')
+            ->setHtmlBody($htmlBody)
+            ->send();
     }
 
     private function findModel($id)
