@@ -15,11 +15,13 @@ import GenericNotFound from '../../components/GenericNotFound';
 import PrivateDefaultLayout from '../../layouts/PrivateDefaultLayout';
 import markSaga from '../MarkInputContainer/saga';
 import markReducer from '../MarkInputContainer/reducer';
+import UserPage from '../Pages/UserPage';
 
 const App = () => (
   <Switch>
     <PrivateDefaultLayout exact path="/" component={LandingPage} />
     <PrivateDefaultLayout exact path="/gradebook" component={GradeBookPage} />
+    <PrivateDefaultLayout exact path="/users" component={UserPage} />
     <Route exact path="/login" component={LoginPage} />
     <Route component={GenericNotFound} />
   </Switch>

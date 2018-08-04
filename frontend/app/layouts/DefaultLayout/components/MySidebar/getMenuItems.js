@@ -1,4 +1,8 @@
-import { STUDENT_ROLE } from '../../../../utils/constants';
+import {
+  PRINCIPAL_ROLE,
+  STUDENT_ROLE,
+  TEACHER_ROLE,
+} from '../../../../utils/constants';
 
 const getMenuItems = () => [
   {
@@ -6,6 +10,12 @@ const getMenuItems = () => [
     title: 'Home',
     icon: 'home',
     notAllowedRoles: [STUDENT_ROLE],
+  },
+  {
+    to: '/users',
+    title: 'Users',
+    icon: 'user',
+    notAllowedRoles: [STUDENT_ROLE, TEACHER_ROLE, PRINCIPAL_ROLE],
   },
   {
     to: '/gradebook',

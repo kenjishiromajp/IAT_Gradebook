@@ -10,6 +10,7 @@ import { Button, Row } from 'antd';
 import './style.less';
 import MarkInputContainer from '../../containers/MarkInputContainer';
 import { API_URL } from '../../utils/constants';
+import { getRequest, requestDownload } from '../../utils/request';
 
 class GradeTable extends Component {
   getAllTasks = () => {
@@ -23,6 +24,10 @@ class GradeTable extends Component {
       }
       return [...accumultator, ...subjectTasks];
     }, []);
+  };
+
+  downloadExcel = (url) => {
+    requestDownload(url, `gradebook_${this.props.courseClass.id}`);
   };
   renderTasks = () => {
     const { courseClass: { subjects } } = this.props;
@@ -54,7 +59,7 @@ class GradeTable extends Component {
     const marksByTask = marks.reduce(
       (accumulator, current) => ({
         ...accumulator,
-        [current.task_id]: { ...current, approved: !!current.approved },
+        [current.task_id]: { ...current },
       }),
       {}
     );
@@ -121,8 +126,9 @@ class GradeTable extends Component {
           </div>
           <Button
             size="small"
-            download={`gradebook_${this.props.courseClass.id}.csv`}
-            href={`${API_URL}/gradebooks/${this.props.courseClass.id}/download`}
+            onClick={() =>
+              this.downloadExcel(`${API_URL}/gradebooks/${this.props.courseClass.id}/download`)
+            }
           >
             Download Excel
           </Button>

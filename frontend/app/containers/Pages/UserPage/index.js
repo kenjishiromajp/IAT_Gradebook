@@ -1,17 +1,54 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import CourseClassListContainer from '../../CourseClassListContainer/index';
-import GradeTableList from '../../../components/GradeTableList/index';
+import { Card, Row } from 'antd';
+import UserListContainer from '../../UserListContainer';
+import ModalButton from '../../../components/ModalButton';
+import UserFormContainer from '../../UserFormContainer';
 
-const UserPage = () => (
-  <div>
-    <Helmet>
-      <title>IAT - GradeBook Page</title>
-    </Helmet>
-    <h1>Your GradeBook</h1>
-    <h3>List of your classes</h3>
-    <CourseClassListContainer component={GradeTableList} />
-  </div>
-);
+class UserPage extends Component {
+  state = {
+    modalOpened: false,
+  };
+  handleCanceModal = () => {
+    this.setState({
+      modalOpened: false,
+    });
+  };
+  handleOpenModal = () => {
+    this.setState({
+      modalOpened: true,
+    });
+  };
+  render() {
+    const { modalOpened } = this.state;
+    return (
+      <div>
+        <Helmet>
+          <title>IAT - Users</title>
+        </Helmet>
+        <Row type="flex" justify="space-between" align="middle">
+          <div>
+            <h1>Users</h1>
+            <h3>List of Users</h3>
+          </div>
+          <div>
+            <ModalButton
+              buttonLabel="Register User"
+              visible={modalOpened}
+              onCancel={this.handleCanceModal}
+              onOpen={this.handleOpenModal}
+            >
+              <h3>Register User</h3>
+              <UserFormContainer />
+            </ModalButton>
+          </div>
+        </Row>
+        <Card>
+          <UserListContainer />
+        </Card>
+      </div>
+    );
+  }
+}
 
 export default UserPage;

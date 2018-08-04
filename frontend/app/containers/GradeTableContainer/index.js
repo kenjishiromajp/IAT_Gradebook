@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Dropdown, Icon, Input, Menu, Modal } from 'antd';
+import { Dropdown, Icon, Input, Menu, Modal } from 'antd';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -16,7 +16,6 @@ import GradeTable from '../../components/GradeTable';
 import { editMarks } from '../MarkInputContainer/actions';
 import { loadCourseClassSilently } from '../CourseClassListContainer/actions';
 import { withLoginUser } from '../../utils/withLoginUser';
-import { API_URL } from '../../utils/constants';
 const MenuItem = Menu.Item;
 
 class GradeTableContainer extends Component {
@@ -67,11 +66,6 @@ class GradeTableContainer extends Component {
         });
       })
       .catch(() => {});
-  };
-  handleChangeReason = ({ target: { value: reasonOfDisapproval } }) => {
-    this.setState({
-      reasonOfDisapproval,
-    });
   };
   renderMenu = () => (
     <Menu>

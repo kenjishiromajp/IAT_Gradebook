@@ -54,6 +54,8 @@ class MarkInput extends Component {
       loading,
       value: mark,
       canCheck,
+      onBlur,
+      readOnly,
       ...restProps
     } = this.props;
     const { value } = mark;
@@ -70,13 +72,17 @@ class MarkInput extends Component {
           canCheck && (
             <Checkbox onChange={this.handleCheck} checked={checked} />
           )}
-        <InputDecimalNumber
-          {...restProps}
-          min={0}
-          onBlur={this.props.onBlur}
-          onChange={this.handleChange}
-          value={value}
-        />
+        {readOnly ? (
+          <h3>{value}</h3>
+        ) : (
+          <InputDecimalNumber
+            {...restProps}
+            onBlur={onBlur}
+            min={0}
+            onChange={this.handleChange}
+            value={value}
+          />
+        )}
         {this.renderIcon()}
         {loading && <Icon type="loading" />}
       </Row>
@@ -92,8 +98,10 @@ MarkInput.defaultProps = {
   loading: false,
   checked: false,
   canCheck: true,
+  readOnly: false,
 };
 MarkInput.propTypes = {
+  readOnly: PropTypes.bool,
   canCheck: PropTypes.bool,
   onBlur: PropTypes.func,
   onCheck: PropTypes.func,

@@ -9,7 +9,7 @@ const GradeBookPage = () => (
       <title>IAT - GradeBook Page</title>
     </Helmet>
     <h1>Your GradeBook</h1>
-    <h3>List of your classes</h3>
+    <h3>List of classes</h3>
     <CourseClassListContainer component={GradeTableList} />
   </div>
 );

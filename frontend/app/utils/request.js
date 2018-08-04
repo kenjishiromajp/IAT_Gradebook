@@ -48,6 +48,62 @@ export const deleteRequest = (url, body) =>
     body,
   });
 
+export const requestDownload = (
+  url,
+  downloadFileName = 'download',
+  params = {
+    method: 'GET',
+    contentType: CONTENT_TYPE_APPLICATION_JSON,
+  }
+) => {
+  const { method, contentType, ...customOptions } = params;
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  let userToken = '';
+  if (currentUser) {
+    userToken = currentUser.token ? currentUser.token : null;
+  }
+
+  const headers = {
+    Authorization: `Bearer ${userToken}`,
+  };
+
+  if (contentType) {
+    headers['Content-type'] = contentType;
+  }
+
+  const options = {
+    ...customOptions,
+    method,
+    headers,
+  };
+
+  const newOptions = options;
+  if (newOptions.body) {
+    newOptions.body =
+      contentType === CONTENT_TYPE_FORM_DATA
+        ? newOptions.body
+        : JSON.stringify(newOptions.body);
+  }
+  return fetch(url, newOptions)
+    .then((response) => {
+      if (response.status.toString().match(/^4/)) {
+        throw new RequestError(`${response.status} Error`, response);
+      }
+      return Promise.resolve(response.blob());
+    })
+    .then((blob) => {
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = downloadFileName;
+      a.click();
+      return downloadUrl;
+    })
+    .catch((error) => {
+      throw new RequestError(error.message, { status: 500 });
+    });
+};
+
 const request = (
   url,
   { contentType = CONTENT_TYPE_APPLICATION_JSON, ...customOptions }

@@ -9,3 +9,8 @@ export const ADMIN_ROLE = 'Admin';
 export const PRINCIPAL_ROLE = 'Principal';
 export const TEACHER_ROLE = 'Teacher';
 export const STUDENT_ROLE = 'Student';
+
+export const ADMIN_ROLE_ID = 1;
+export const PRINCIPAL_ROLE_ID = 2;
+export const TEACHER_ROLE_ID = 3;
+export const STUDENT_ROLE_ID = 4;

@@ -64,7 +64,7 @@ class MarkInputContainer extends Component {
         loading={loading}
         onBlur={this.handleBlur}
         onChange={this.handleChange}
-        readOnly={this.props.isStudent()}
+        readOnly={this.props.isStudent() || this.props.isPrincipal()}
       />
     );
   }
