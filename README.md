@@ -5,6 +5,8 @@
 <a href="#"><img width="728" src="imgs/background_image.png" alt="IAT - Dev Challenge" /></a>
 
 ---
+LINK to test application:
+https://ancient-waters-70708.herokuapp.com/
 
 # Getting Started
 
