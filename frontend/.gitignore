@@ -3,3 +3,4 @@ node_modules
 .nfs.*
 ._*
 .DS_Store
+build

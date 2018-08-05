@@ -206,11 +206,12 @@
     "file-loader": "^1.1.6",
     "html-loader": "^0.5.5",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.5",
     "image-webpack-loader": "^3.4.2",
     "json-loader": "^0.5.7",
     "json-server": "^0.12.1",
+    "lint-staged": "^7.0.5",
     "lodash": "^4.17.5",
+    "lodash-webpack-plugin": "^0.11.5",
     "plop": "^2.0.0",
     "prettier-eslint": "^8.8.1",
     "prettier-eslint-cli": "^4.7.1",
@@ -218,6 +219,7 @@
     "tapable": "1.0.0-beta.5",
     "url-loader": "^0.6.2",
     "webpack-bundle-analyzer": "^2.9.2",
+    "webpack-cli": "^3.1.0",
     "webpack-dev-middleware": "^2.0.4",
     "webpack-hot-middleware": "^2.21.0"
   }
