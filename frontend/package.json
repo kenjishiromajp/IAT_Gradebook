@@ -6,6 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development node server",
     "precommit": "lint-staged",
+    "test": "cross-env NODE_ENV=test jest --coverage",
     "prod": "cross-env NODE_ENV=production node server",
     "jsonserver": "json-server --watch test-db.json --port 3004",
     "build":
@@ -132,13 +133,11 @@
     },
     "moduleDirectories": ["node_modules", "app"],
     "moduleNameMapper": {
-      ".*\\.(css|less|styl|scss|sass)$":
-        "<rootDir>/internals/mocks/cssModule.js",
+      ".*\\.(css|less|styl|scss|sass)$": "<rootDir>/configs/mock/cssModule.js",
       ".*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/internals/mocks/image.js"
+        "<rootDir>/configs/mock/image.js"
     },
-    "setupTestFrameworkScriptFile":
-      "<rootDir>/internals/testing/test-bundler.js",
+    "setupTestFrameworkScriptFile": "<rootDir>/configs/test-bundler.js",
     "testRegex": "tests/.*\\.test\\.js$"
   },
   "dependencies": {
@@ -177,8 +176,10 @@
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "@types/jest": "^23.3.1",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.1",
+    "babel-jest": "^23.4.2",
     "babel-loader": "^7.1.2",
     "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-plugin-import": "^1.6.3",
@@ -196,6 +197,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "compression-webpack-plugin": "^1.1.11",
     "css-loader": "^0.28.9",
+    "enzyme": "^3.5.0",
+    "enzyme-adapter-react-16": "^1.3.0",
     "eslint": "^4.16.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
@@ -207,6 +210,8 @@
     "html-loader": "^0.5.5",
     "husky": "^0.14.3",
     "image-webpack-loader": "^3.4.2",
+    "invariant": "^2.2.4",
+    "jest": "^23.5.0",
     "json-loader": "^0.5.7",
     "json-server": "^0.12.1",
     "lint-staged": "^7.0.5",
@@ -215,6 +220,7 @@
     "plop": "^2.0.0",
     "prettier-eslint": "^8.8.1",
     "prettier-eslint-cli": "^4.7.1",
+    "regenerator-runtime": "^0.12.1",
     "style-loader": "^0.19.1",
     "tapable": "1.0.0-beta.5",
     "url-loader": "^0.6.2",
